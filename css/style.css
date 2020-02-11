@@ -34,7 +34,7 @@ body{
   color: #ffd700;
 }
 
-/* Landing Page */
+/*====== Landing Page ======*/
 
 .home-inner{
   background-image: url(../img/car.jpg);
@@ -65,6 +65,23 @@ body{
   padding: 0.6rem 1.3rem;
   font-size: 1.1rem;
 }
+
+/*====== About Us ======*/
+
+.narrow {
+  width: 75%;
+  margin: 1.5rem auto;
+  padding-top: 2rem;
+}
+.narrow h1{
+  font-size: 2.4rem;
+}
+
+.narrow ul li {
+  font-size: 1.6rem;
+  padding: 0.8rem 1.2rem;
+}
+/*====== Features ======*/
 
 /*---- use media queries to adjust the changes for mobile screens
        like img sizes and the headers ----*/
