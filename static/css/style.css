@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Lato:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 
 body{
   overflow-x: hidden;
@@ -121,6 +122,41 @@ h3.heading{
   margin-bottom: 2.5rem;
   border: 0.01rem solid orange;
 }
+
+.helpful-title{
+  margin-bottom: 15px;
+  font-size: 20px;
+
+}
+.footer-links:hover{
+  color: #ffd700;
+}
+
+.helpful-links{
+  padding: 10px;
+  border: orange;
+  border-width: 0px 0px 0px 10px;
+  border-style: solid;
+
+}
+
+.copyright{
+  background-color: #505962;
+  color: whitesmoke;
+  padding: 20px;
+  border-top: 1px solid #333;
+}
+.copyright ul li{
+  display: inline-block;
+  margin-left: 20px;
+}
+.copyright ul li a{
+  color: orange;
+}
+.copyright ul{
+  margin: 0px;
+}
+
 /*---- use media queries to adjust the changes for mobile screens
        like img sizes and the headers ----*/
 

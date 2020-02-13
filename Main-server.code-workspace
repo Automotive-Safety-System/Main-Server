@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"prettier.tabWidth": 4,
+		"liveServer.settings.port": 5000
+
+	}
+}
