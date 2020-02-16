@@ -1,0 +1,26 @@
+body{
+    background-color: #FAFAFA; 
+}
+.content{
+    margin-bottom: 10vh;
+}
+.form-section{
+    margin-top: 12%;
+    border-left: orange solid 10px;
+    padding: 10px;
+}
+.form-control:hover{
+    border-bottom: orange solid 3px;   
+}
+
+.btn-submit{
+    border-radius: 40px;
+    width: 40%;
+    background-color: orange;
+}
+span{
+    margin-left: 16.7%;
+}
+.phone-span{
+    margin-left: 33.3%;
+}

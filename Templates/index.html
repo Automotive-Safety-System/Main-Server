@@ -1,0 +1,223 @@
+{% extends "layout.html" %} {% block body %}
+<div id="home">
+    <!-- Landing Section -->
+    <div class="landing">
+        <div class="home-wrap">
+            <div class="home-inner"></div>
+        </div>
+    </div>
+    <div class="caption text-center">
+        <h1>Automotive Safety Systems</h1>
+        <h3>YOUR SAFETY IS OUR PRIORITY</h3>
+        <a class="btn btn-outline-light btn-lg" href="{{ url_for('register')}}"
+            >GET STARTED</a
+        >
+    </div>
+    <!-- End Landing Section -->
+</div>
+<!-- End Home Section -->
+<!-- Start About Us Section -->
+<div id="aboutus" class="offset">
+    <div class="col-12 narrow text-left">
+        <h1 class="text-center">About Us</h1>
+        <hr class="hr-head-custom" />
+        <ul>
+            <li>
+                <p class="lead">
+                    Our system aims to increase driver safety with least cost
+                    and maximum functionality by implementing all of hardware
+                    interfaces to minimize the code footprint and by using the
+                    best out of our hardware to increase performance.
+                </p>
+            </li>
+            <li>
+                <p class="lead">
+                    The system can be embedded in a real car system and
+                    communicate with it
+                </p>
+            </li>
+            <li>
+                <p class="lead">
+                    It aims to be user friendly by through android application
+                    and a website to monitor user data and configure the
+                    system’s features.
+                </p>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- End About Us Section -->
+<!-- Start Feature Section -->
+<div id="features" class="offset">
+    <div class="jumbotron">
+        <div class="narrow text-center">
+            <div class="col-12">
+                <h3 class="heading">Features</h3>
+                <hr class="hr-head-custom" />
+            </div>
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <div class="feature">
+                        <img src="../static/img/ads.png" class="img-to-icon" />
+                        <h3>Accident Detection System</h3>
+                        <p>
+                            Using gyroscope and accelerometer accident is
+                            detected immediately ,then GPS determines the
+                            location of the car and send its location to MCU to
+                            send SMS to the emergency number.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature">
+                        <img
+                            src="../static/img/sleep.png"
+                            class="img-to-icon"
+                        />
+                        <h3>Sleep Detection System</h3>
+                        <p>
+                            Using camera to determine whether the driver is
+                            drowsy through a system based on artificial
+                            intelligence.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature">
+                        <img
+                            src="../static/img/ar-navigation.png"
+                            class="img-to-icon"
+                        />
+                        <h3>AR Navigation</h3>
+                        <p>
+                            User sends the destination location via the app to
+                            the cloud, The cloud sends the directions and the
+                            distance to be displayed.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <hr class="hr-split-custom" />
+                </div>
+                <div class="col-md-4">
+                    <div class="feature">
+                        <img src="../static/img/ui.png" class="img-to-icon" />
+                        <h3>User Interface</h3>
+                        <p>
+                            User Interface through which you can monitor your
+                            data and to configure the system’s features.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature">
+                        <img
+                            src="../static/img/integration.png"
+                            class="img-to-icon"
+                        />
+                        <h3>System Integration</h3>
+                        <p>
+                            The system can be easily embedded in your car system
+                            and communicate with it.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature">
+                        <img src="../static/img/ota.png" class="img-to-icon" />
+                        <h3>OTA Update</h3>
+                        <p>
+                            An Over-The-Air update is the wireless delivery of
+                            new software to our system with a click of a button.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Feature Section -->
+<!-- Start Footer Section -->
+<div class="footer" id="contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="info">
+                    <a class="navbar-brand" href="{{ url_for('home')}}"
+                        ><img src="../static/img/logo.png"
+                    /></a>
+                    <span>AUTOMOTIVE SAFETY SYSTEMS</span>
+                    <hr />
+                    <p class="footer-info">
+                        Our system aims to increase driver &nbsp;safety
+                        with&nbsp; least cost &nbsp;and &nbsp;maximum
+                        functionality by implementing all of the hardware
+                        interfaces &nbsp;to minimize the code footprint and by
+                        using &nbsp;the best out of our &nbsp;hardware to
+                        increase performance.
+                    </p>
+                    <hr />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="helpful-links">
+                    <p class="helpful-title">Helpful Links</p>
+                    <hr />
+                    <ul class="list-unstyled">
+                        <li class="footer-links">Register</li>
+                        <li class="footer-links">Login</li>
+                        <li class="footer-links">Dashboard</li>
+                        <li class="footer-links">Terms of use</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="helpful-links">
+                    <p class="helpful-title">Contact Us</p>
+                    <hr />
+                    <ul class="list-unstyled">
+                        <li>44511 Zagazig, Sharqia, Egypt</li>
+                        <li>Phone: 0123456789</li>
+                        <li>
+                            Email:<a href="Safetysystemzu@gmail.com"
+                                >Safetysystemzu@gmail.com</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Footer Section -->
+
+<!-- start CopyRight Section -->
+
+<div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col text-left text-uppercase">
+                Copyright 2020 Wolves Company &copy; All Right Reserved!
+            </div>
+            <div class="col text-right">
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="#"><i class="fab fa-facebook-square"></i></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fab fa-twitter-square"></i></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End CopyRight  -->
+<!-- Optional JavaScript -->
+{% endblock %}

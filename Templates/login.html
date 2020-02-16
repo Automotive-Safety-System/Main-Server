@@ -1,0 +1,62 @@
+{% extends "layout.html" %}{% block head %}
+<link
+    rel="stylesheet"
+    type="text/css"
+    href="{{ url_for('static', filename='css/form.css')}}"
+/>
+{% endblock head%} {% block body %}
+<div class="form-section col-lg-8 col-sm-12 ml-auto mr-auto content">
+    <form action="" method="POST">
+        <!-- adding CSRF token -->
+        {{form.hidden_tag()}}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4 ml-auto ">Welcome again!</legend>
+            <div class="form-group row">
+                <!-- email  -->
+                {{ form.email.label(class="form-control-label col-md-2")}}
+                {{form.email(class="form-control form-control-lg col-md-10 m-auto")}}
+
+            </div>
+
+            <div class="form-group row">
+                <!-- password  -->
+                {{ form.password.label(class="form-control-label col-md-2")}}
+                {{form.password(class="form-control form-control-lg col-md-10 m-auto")}}
+
+            </div>
+        </fieldset>
+        <div class="form-group row">
+            {{ form.submit(class="btn btn-warning btn-lg m-auto btn-submit")}}
+        </div>
+    </form>
+
+
+<!-- start CopyRight Section -->
+
+<div class="copyright fixed-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col text-left text-uppercase">
+                Copyright 2020 Wolves Company &copy; All Right Reserved!
+            </div>
+            <div class="col text-right">
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="#"><i class="fab fa-facebook-square"></i></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fab fa-twitter-square"></i></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End CopyRight  -->
+{% endblock body%}
