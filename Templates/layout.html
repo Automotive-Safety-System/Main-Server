@@ -15,14 +15,13 @@
             integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
             crossorigin="anonymous"
         />
-        <link rel="stylesheet" href="../static/css/style.css" />
-        <link rel="stylesheet" href="../static/css/fixed.css" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css')}}" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/fixed.css')}}" />
         {% block head %}
         {% endblock %}
     </head>
     <body data-spy="scroll" data-target="#navbarResponsive">
         <!-- Start Home Section -->
-        <div id="home">
             <!-- Navigation -->
             <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
                 <a class="navbar-brand" href="{{ url_for('home')}}"
@@ -40,7 +39,7 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="#home">Home</a>
+                            <a class="nav-link" href="{{ url_for('home') }}">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#aboutus">About Us</a>
@@ -75,6 +74,16 @@
         <!-- Start Copyright Section -->
 
         <!-- End Copyright -->
+        {% with messages = get_flashed_messages(with_categories= true) %} 
+        <!-- will allow us to use flash  -->
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
             {% block body%}
             {% endblock%}
 
@@ -99,4 +108,5 @@
     ></script>
     <script src="https://use.fontawesome.com/releases/v5.5.0/js/all.js"></script>
 </body>
+
 </html>

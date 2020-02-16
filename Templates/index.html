@@ -1,17 +1,20 @@
 {% extends "layout.html" %} {% block body %}
-<!-- Landing Section -->
-<div class="landing">
-    <div class="home-wrap">
-        <div class="home-inner"></div>
+<div id="home">
+    <!-- Landing Section -->
+    <div class="landing">
+        <div class="home-wrap">
+            <div class="home-inner"></div>
+        </div>
     </div>
+    <div class="caption text-center">
+        <h1>Automotive Safety Systems</h1>
+        <h3>YOUR SAFETY IS OUR PRIORITY</h3>
+        <a class="btn btn-outline-light btn-lg" href="{{ url_for('register')}}"
+            >GET STARTED</a
+        >
+    </div>
+    <!-- End Landing Section -->
 </div>
-<div class="caption text-center">
-    <h1>Automotive Safety Systems</h1>
-    <h3>YOUR SAFETY IS OUR PRIORITY</h3>
-    <a class="btn btn-outline-light btn-lg" href="{{ url_for('register')}}">GET STARTED</a>
-</div>
-<!-- End Landing Section -->
-<!-- </div> -->
 <!-- End Home Section -->
 <!-- Start About Us Section -->
 <div id="aboutus" class="offset">

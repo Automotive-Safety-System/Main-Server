@@ -1,1 +1,224 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %} {% block head %}
+<link
+    rel="stylesheet"
+    type="text/css"
+    href="{{ url_for('static', filename='css/form.css')}}"
+/>
+{% endblock head%} {% block body %}
+<div class="form-section col-lg-8 col-sm-12 ml-auto mr-auto content">
+    <form action="" method="POST">
+        <!-- adding CSRF token -->
+        {{form.hidden_tag()}}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4 ml-auto ">Join Today!</legend>
+            <div class="form-group row">
+                <!-- username  -->
+                {{ form.username.label(class="form-control-label col-md-2 m-auto")}}
+                {% if form.username.errors %}
+                    {{form.username(class="form-control form-control-lg col-md-10 m-auto is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.username.errors %}
+                            <span class="col-md-12">{{ error }}</span>
+                        {% endfor%}
+                    </div>
+                {% else %}
+                    {{form.username(class="form-control form-control-lg col-md-10 m-auto")}}
+                {% endif %}
+            </div>
+            
+            <div class="form-group row">
+                <!-- first name  -->
+                {{ form.first_name.label(class="form-control-label col-md-2 m-auto")}}
+                {% if form.first_name.errors %}
+                    {{form.first_name(class="form-control form-control-lg col-md-4 m-auto is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.first_name.errors %}
+                            <span class="col-md-12">{{ error }}</span>
+                        {% endfor%}
+                    </div>
+                {% else %}
+                    {{form.first_name(class="form-control form-control-lg col-md-4 m-auto")}}
+                {% endif %}
+                <!-- last name  -->
+                {{ form.last_name.label(class="form-control-label col-md-2 m-auto")}}
+                {% if form.last_name.errors %}
+                    {{form.last_name(class="form-control form-control-lg col-md-4 m-auto is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.last_name.errors %}
+                            <span class="col-md-12">{{ error }}</span>
+                        {% endfor%}
+                    </div>
+                {% else %}
+                    {{form.last_name(class="form-control form-control-lg col-md-4 m-auto")}}
+                {% endif %}
+            </div>
+
+            <div class="form-group row">
+                <!-- email  -->
+                {{ form.email.label(class="form-control-label col-md-2")}}
+                {% if form.email.errors %}
+                    {{form.email(class="form-control form-control-lg col-md-10 m-auto is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.email.errors %}
+                            <span class="col-md-12">{{ error }}</span>
+                        {% endfor%}
+                    </div>
+                {% else %}
+                    {{form.email(class="form-control form-control-lg col-md-10 m-auto")}}
+                {% endif %}
+            </div>
+
+            <div class="form-group row">
+                <!-- password  -->
+                {{ form.password.label(class="form-control-label col-md-2")}}
+                {% if form.password.errors %}
+                {{form.password(class="form-control form-control-lg col-md-10 m-auto is-invalid")}}
+                <div class="invalid-feedback">
+                    {% for error in form.password.errors %}
+                        <span class="col-md-12">{{ error }}</span>
+                    {% endfor%}
+                </div>
+                {% else %}
+                    {{form.password(class="form-control form-control-lg col-md-10 m-auto")}}
+                {% endif %}
+            </div>
+
+            <div class="form-group row">
+                <!-- confirm password  -->
+                {{ form.confirm_password.label(class="form-control-label col-md-2")}}
+                {% if form.confirm_password.errors %}
+                    {{form.confirm_password(class="form-control form-control-lg col-md-10 m-auto is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.confirm_password.errors %}
+                            <span class="col-md-12">{{ error }}</span>
+                        {% endfor%}
+                    </div>
+                {% else %}
+                    {{form.confirm_password(class="form-control form-control-lg col-md-10 m-auto")}}
+                {% endif %}
+            </div>
+            <div class= "form-group row">
+                <div class="form-group row col-md-6 pl-0">
+                    <!-- phone  -->
+                    {{ form.phone.label(class="form-control-label col-md-4 m-auto")}}
+                    {% if form.phone.errors %}
+                        {{form.phone(class="form-control form-control-lg col-md-8 m-auto is-invalid")}}
+                        <div class="invalid-feedback">
+                            {% for error in form.phone.errors %}
+                                <span class="col-md-12 phone-span">{{ error }}</span>
+                            {% endfor%}
+                        </div>
+                    {% else %}
+                        {{form.phone(class="form-control form-control-lg col-md-8 m-auto")}}
+                    {% endif %}
+                </div>
+                <div class="form-group row col-md-6 pl-0">
+                    <!-- country  -->
+                    {{ form.country.label(class="form-control-label col-md-4 m-auto")}}
+                    {% if form.country.errors %}
+                        {{form.country(class="form-control form-control-lg col-md-8 m-auto is-invalid")}}
+                        <div class="invalid-feedback">
+                            {% for error in form.country.errors %}
+                                <span class="col-md-12 phone-span">{{ error }}</span>
+                            {% endfor%}
+                        </div>
+                    {% else %}
+                        {{form.country(class="form-control form-control-lg col-md-8 m-auto")}}
+                    {% endif %}
+                </div>
+            </div>        
+            <div class="form-group row">
+                <!-- state  -->
+                {{ form.state.label(class="form-control-label col-md-2 m-auto")}}
+                {% if form.state.errors %}
+                    {{form.state(class="form-control form-control-lg col-md-4 m-auto is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.state.errors %}
+                            <span class="col-md-12">{{ error }}</span>
+                        {% endfor%}
+                    </div>
+                {% else %}
+                    {{form.state(class="form-control form-control-lg col-md-4 m-auto")}}
+                {% endif %}
+                <!-- city  -->
+                {{ form.city.label(class="form-control-label col-md-2 m-auto")}}
+                {% if form.city.errors %}
+                    {{form.city(class="form-control form-control-lg col-md-4 m-auto is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.city.errors %}
+                            <span class="col-md-12">{{ error }}</span>
+                        {% endfor%}
+                    </div>
+                {% else %}
+                    {{form.city(class="form-control form-control-lg col-md-4 m-auto")}}
+                {% endif %}
+            </div>
+
+            <div class="form-group row">
+                <!-- street  -->
+                {{ form.street.label(class="form-control-label col-md-2 m-auto")}}
+                {% if form.street.errors %}
+                    {{form.street(class="form-control form-control-lg col-md-7 m-auto is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.street.errors %}
+                            <span class="col-md-12">{{ error }}</span>
+                        {% endfor%}
+                    </div>
+                {% else %}
+                    {{form.street(class="form-control form-control-lg col-md-7 m-auto")}}
+                {% endif %}
+                <!-- zip code  -->
+                {{ form.zip_code.label(class="form-control-label col-md-1 m-auto")}}
+                {% if form.zip_code.errors %}
+                    {{form.zip_code(class="form-control form-control-lg col-md-2 m-auto is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.zip_code.errors %}
+                            <span class="col-md-12">{{ error }}</span>
+                        {% endfor%}
+                    </div>
+                {% else %}
+                    {{form.zip_code(class="form-control form-control-lg col-md-2 m-auto")}}
+                {% endif %}
+            </div>
+        </fieldset>
+        <div class="form-group row">
+            {{ form.submit(class="btn btn-warning btn-lg m-auto btn-submit")}}
+        </div>
+    </form>
+    <div class="border-top pt-3 col-md-8 m-auto ">
+        <small class="text-muted ml-auto col-md-12">
+            Alerady have account? <a href="{{ url_for('login')}}">Sing In</a>
+        </small>
+    </div>
+</div> 
+
+
+<!-- start CopyRight Section -->
+
+<div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col text-left text-uppercase">
+                Copyright 2020 Wolves Company &copy; All Right Reserved!
+            </div>
+            <div class="col text-right">
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="#"><i class="fab fa-facebook-square"></i></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fab fa-twitter-square"></i></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End CopyRight  -->
+{% endblock body%}
