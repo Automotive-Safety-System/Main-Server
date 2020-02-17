@@ -5,10 +5,12 @@ body{
     margin-bottom: 10vh;
 }
 .form-section{
-    margin-top: 12%;
+    margin-top: 10%;
     border-left: orange solid 10px;
+    border-right: orange solid 10px;
     padding: 10px;
 }
+
 .form-control:hover{
     border-bottom: orange solid 3px;   
 }
