@@ -10,7 +10,7 @@
         <!-- adding CSRF token -->
         {{form.hidden_tag()}}
         <fieldset class="form-group">
-            <legend class="border-bottom mb-4 ml-auto ">Join Today!</legend>
+            <legend class="border-bottom mb-4 ml-auto form-section " style="text-align: center;">JOIN TODAY!</legend>
             <div class="form-group row">
                 <!-- username  -->
                 {{ form.username.label(class="form-control-label col-md-2 m-auto")}}
@@ -185,7 +185,7 @@
             {{ form.submit(class="btn btn-warning btn-lg m-auto btn-submit")}}
         </div>
     </form>
-    <div class="border-top pt-3 col-md-8 m-auto ">
+    <div class="border-top pt-3 col-md-8 m-auto " style="text-align: center;">
         <small class="text-muted ml-auto col-md-12">
             Alerady have account? <a href="{{ url_for('login')}}">Sing In</a>
         </small>
@@ -193,32 +193,4 @@
 </div> 
 
 
-<!-- start CopyRight Section -->
-
-<div class="copyright">
-    <div class="container">
-        <div class="row">
-            <div class="col text-left text-uppercase">
-                Copyright 2020 Wolves Company &copy; All Right Reserved!
-            </div>
-            <div class="col text-right">
-                <ul class="list-unstyled">
-                    <li>
-                        <a href="#"><i class="fab fa-facebook-square"></i></a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fab fa-twitter-square"></i></a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End CopyRight  -->
 {% endblock body%}
