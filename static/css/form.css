@@ -8,6 +8,7 @@ body{
     margin-top: 10%;
     border-left: orange solid 10px;
     border-right: orange solid 10px;
+    border-radius: 3px;
     padding: 10px;
 }
 
