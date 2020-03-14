@@ -1,10 +1,7 @@
-import os
-from flask import Flask, render_template, url_for, flash, redirect
-from forms import RegistrationForm, LoginForm
+from flask import render_template, url_for, flash, redirect
+from gradproj import app
+from gradproj.forms import RegistrationForm, LoginForm
 
-app = Flask(__name__)
-
-app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 
 @app.route("/")
 @app.route("/home")
@@ -18,7 +15,7 @@ def register():
         flash(f'Account created for {form.username.data}!', 'success')
         return redirect(url_for('dashboard'))
     return render_template('register.html', title='Register', form= form)
-    
+
 @app.route("/login")
 def login():
     form = LoginForm()
