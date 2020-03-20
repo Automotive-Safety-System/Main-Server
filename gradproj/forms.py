@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
-
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from gradproj.models import User
 
 # Registration Form 
 class RegistrationForm(FlaskForm):
@@ -18,6 +18,25 @@ class RegistrationForm(FlaskForm):
     zip_code = StringField('ZIP')
     street = StringField('Street', validators=[DataRequired()])
     submit = SubmitField('Sign up')
+
+# username validation function 
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user:
+            raise ValidationError('That username is taken. please choose another one!')
+
+# Email validation function 
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError('That email is taken. please choose another one!')
+
+# Phone number validation function 
+    def validate_phone(self, phone):
+        user = User.query.filter_by(phone_number=phone.data).first()
+        if user:
+            raise ValidationError('That phone is taken. please choose another one!')
+
 
 # Login form 
 class LoginForm(FlaskForm):

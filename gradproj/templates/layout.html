@@ -7,7 +7,7 @@
             name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
-        <title>Automotive Safety System</title>
+        <!-- <title>Automotive Safety System</title> -->
         <!-- Bootstrap CSS -->
         <link
             rel="stylesheet"
@@ -17,76 +17,72 @@
         />
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css')}}" />
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/fixed.css')}}" />
+        {% if title %}
+            <title>Automotive Safety System - {{ title }}</title>
+        {% else %}
+            <title>Automotive Safety System</title>
+        {% endif %}
         {% block head %}
         {% endblock %}
     </head>
     <body data-spy="scroll" data-target="#navbarResponsive">
         <!-- Start Home Section -->
+        <header class="container">
             <!-- Navigation -->
             <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-                <a class="navbar-brand" href="{{ url_for('home')}}"
-                    ><img src="../static/img/logo.png"
-                /></a>
-                
-                <button
-                    class="navbar-toggler"
-                    type="button"
-                    data-toggle="collapse"
-                    data-target="#navbarResponsive"
-                >
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('home') }}">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('home') }}#aboutus">About Us</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('home') }}#features">Features</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('home') }}#contact">Contact</a>
-                        </li>
-                        <li class="nav-item ">
-                            <a
-                                class="nav-link"
-                                href="{{ url_for('register')}}"
-                                target="_blank"
-                                >Sign Up</a
-                            >
-                        </li>
-                        <li class="nav-item ">
-                            <a
-                                class="nav-link"
-                                href="{{ url_for('login')}}"
-                                target="_blank"
-                                >Sign In</a
-                            >
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        <!-- End Navigation -->
-
-        <!-- Start Copyright Section -->
-
-        <!-- End Copyright -->
-        {% with messages = get_flashed_messages(with_categories= true) %} 
-        <!-- will allow us to use flash  -->
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-            {% block body%}
-            {% endblock%}
+                <div class="container">
+                    <a class="navbar-brand" href="{{ url_for('home')}}"
+                        ><img src="../static/img/logo.png"/></a>
+                    <button
+                        class="navbar-toggler"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#navbarResponsive"
+                    >
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
                     
+
+                    <div class="collapse navbar-collapse" id="navbarResponsive">
+                        <!-- <ul class="navbar-nav ml-auto"> -->
+                        <div class="navbar-nav mr-auto">
+                            <a class="nav-item nav-link" href="{{ url_for('home') }}">Home</a>
+                            <a class="nav-link nav-link" href="{{ url_for('home') }}#aboutus">About Us</a>
+                            <a class="nav-link nav-link" href="{{ url_for('home') }}#features">Features</a>
+                            <a class="nav-link nav-link" href="{{ url_for('home') }}#contact">Contact</a>
+                                
+                        </div>
+                        <!-- Navbar Right Side -->
+                        <div class="navbar-nav">
+                            {% if current_user.is_authenticated %}
+                                <a class="nav-item nav-link" href="{{ url_for('dashboard') }}">Account</a>
+                                <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+                            {% else %}
+                                <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
+                                <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>    
+            </nav>
+        </header>
+    
+        <!-- End Navigation -->
+        
+        <div >
+            {% with messages = get_flashed_messages(with_categories= true) %} 
+            <!-- will allow us to use flash  -->
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} content ">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+                {% block body%}
+                {% endblock%}
+        </div>
     <!-- start CopyRight Section -->
 
     <div class="copyright ">
