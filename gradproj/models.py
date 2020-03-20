@@ -1,6 +1,14 @@
 from datetime import datetime
-from gradproj import db
+from gradproj import db, login_manager
+from flask_login import UserMixin
 from sqlalchemy import UniqueConstraint
+
+
+# get user by ID docerator 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
 
 User_Address = db.Table('user_address',
     db.Column('id', db.Integer, primary_key = True),
@@ -23,7 +31,7 @@ User_Vehicle = db.Table('user_vehicle',
     UniqueConstraint('user_id','vehicle_id')
     )
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String(20), unique = True, nullable = False)
@@ -33,7 +41,7 @@ class User(db.Model):
     image_file = db.Column(db.String(20), nullable = False, default = 'default.jpg')
     password = db.Column(db.String(60), nullable = False)
     phone_number = db.Column(db.String(20), unique = True ,nullable = False)
-    admin = db.Column(db.Boolean, nullable = False)
+    admin = db.Column(db.Boolean, nullable = False, default = False)
     user_address = db.relationship('Address', secondary = User_Address, backref = 'users' ,lazy = 'dynamic')
     user_contact = db.relationship('Contact', secondary = User_Contact, backref = 'users',lazy = 'dynamic')
     user_vehicle = db.relationship('Vehicle', secondary = User_Vehicle, backref = 'users', lazy = 'dynamic')
