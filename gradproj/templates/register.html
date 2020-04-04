@@ -5,7 +5,7 @@
     href="{{ url_for('static', filename='css/form.css')}}"
 />
 {% endblock head%} {% block body %}
-<div class="form-section col-lg-8 col-sm-12 ml-auto mr-auto content">
+<div class="form-section col-lg-7 col-sm-12 ml-auto mr-auto content">
     <form action="" method="POST">
         <!-- adding CSRF token -->
         {{form.hidden_tag()}}

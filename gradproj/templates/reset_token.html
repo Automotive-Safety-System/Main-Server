@@ -14,52 +14,51 @@
                 class="border-bottom  mb-4 ml-auto form-section"
                 style="text-align: center;"
             >
-                WELCOME AGAIN!
+                Enter your new password
             </legend>
             <div class="form-group row">
-                <!-- email  -->
-                {{ form.email.label(class="form-control-label col-md-2")}}
-                {% if form.email.errors %}
-                    {{form.email(class="form-control form-control-lg col-md-10 m-auto is-invalid")}}
-                    <div class="invalid-feedback">
-                        {% for error in form.email.errors %}
-                            <span class="col-md-12">{{ error }}</span>
-                        {% endfor%}
-                    </div>
+                <!-- password  -->
+                {{ form.password.label(class="form-control-label col-md-2")}}
+                {% if form.password.errors %}
+                {{form.password(class="form-control form-control-lg col-md-10 m-auto is-invalid")}}
+                <div class="invalid-feedback">
+                    {% for error in form.password.errors %}
+                        <span class="col-md-12">{{ error }}</span>
+                    {% endfor%}
+                </div>
                 {% else %}
-                    {{form.email(class="form-control form-control-lg col-md-10 m-auto")}}
+                    {{form.password(class="form-control form-control-lg col-md-10 m-auto")}}
                 {% endif %}
             </div>
 
             <div class="form-group row">
-                <!-- password  -->
-                {{ form.password.label(class="form-control-label col-md-2")}}
-                {{form.password(class="form-control form-control-lg col-md-10 px-1")}}
+                <!-- confirm password  -->
+                {{ form.confirm_password.label(class="form-control-label col-md-2")}}
+                {% if form.confirm_password.errors %}
+                    {{form.confirm_password(class="form-control form-control-lg col-md-10 m-auto is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.confirm_password.errors %}
+                            <span class="col-md-12">{{ error }}</span>
+                        {% endfor%}
+                    </div>
+                {% else %}
+                    {{form.confirm_password(class="form-control form-control-lg col-md-10 m-auto")}}
+                {% endif %}
             </div>
         </fieldset>
-
-        <div class="form-check mb-4" style="text-align: center;">
-            <!-- Remember Me  -->
-            {{ form.remember(class="form-check-input ") }} {{
-            form.remember.label(class="form-check-label  ml-2") }}
-        </div>
 
         <div class="form-group row">
             <!-- Submit btn  -->
             {{ form.submit(class="btn btn-warning btn-lg m-auto btn-submit") }}
         </div>
 
-        <div style="text-align: center;">
-            <!-- Forget password link -->
-            <small class="text-muted ml-2 mb-4">
-                <a href="{{ url_for('reset_request') }}"> Forgot Password?</a>
-            </small>
-        </div>
     </form>
     <div class="border-top pt-3 col-md-8 m-auto " style="text-align: center;">
         <small class="text-muted ml-auto col-md-12">
             Need an account? <a href="{{ url_for('register')}}">sign Up Now</a>
         </small>
     </div>
+    <br>
+    <br>
 </div>
 {% endblock body%}
