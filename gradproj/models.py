@@ -1,5 +1,6 @@
 from datetime import datetime
-from gradproj import db, login_manager
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from gradproj import db, login_manager, app
 from flask_login import UserMixin
 from sqlalchemy import UniqueConstraint
 
@@ -45,6 +46,20 @@ class User(db.Model, UserMixin):
     user_address = db.relationship('Address', secondary = User_Address, backref = 'users' ,lazy = 'dynamic')
     user_contact = db.relationship('Contact', secondary = User_Contact, backref = 'users',lazy = 'dynamic')
     user_vehicle = db.relationship('Vehicle', secondary = User_Vehicle, backref = 'users', lazy = 'dynamic')
+
+    def get_reset_token(self, expires_sec=1800):
+        s = Serializer(app.config['SECRET_KEY'], expires_sec)
+        return s.dumps({'user_id': self.id}).decode('utf-8')
+
+    @staticmethod
+    def verify_reset_tokent(token):
+        s = Serializer(app.config['SECRET_KEY'])
+        try:
+            user_id = s.load(token)['user_id']
+        except:
+            return None
+        return User.query.get('user_id')
+
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
 
