@@ -1,0 +1,177 @@
+{% extends "dashboard-layout.html" %} {% block head %}
+<link
+    rel="stylesheet"
+    type="text/css"
+    href="{{ url_for('static', filename='css/form.css')}}"
+/>
+{% endblock head%} {% block body %}
+<section>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-10 col-lg-9 col-md-8 ml-auto">
+                <div class="form-section col-lg-7 col-sm-12 ml-auto mr-auto content">
+                    <form action="" method="POST" enctype="multipart/form-data">
+                            <!-- adding CSRF token -->
+                            {{form.hidden_tag()}}
+                            <fieldset class="form-group">
+                                <legend class="border-bottom mb-4 ml-auto form-section" style="text-align: center;">Account Info</legend>
+                                <div class="form-group row">
+                                    <!-- username  -->
+                                    {{ form.username.label(class="form-control-label col-md-2 m-auto")}}
+                                    {% if form.username.errors %}
+                                        {{form.username(class="form-control form-control-lg col-md-10 m-auto is-invalid")}}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.username.errors %}
+                                                <span class="col-md-12">{{ error }}</span>
+                                            {% endfor%}
+                                        </div>
+                                    {% else %}
+                                        {{form.username(class="form-control form-control-lg col-md-10 m-auto")}}
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="form-group row">
+                                    <!-- first name  -->
+                                    {{ form.first_name.label(class="form-control-label col-md-2 m-auto")}}
+                                    {% if form.first_name.errors %}
+                                        {{form.first_name(class="form-control form-control-lg col-md-4 m-auto is-invalid")}}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.first_name.errors %}
+                                                <span class="col-md-12">{{ error }}</span>
+                                            {% endfor%}
+                                        </div>
+                                    {% else %}
+                                        {{form.first_name(class="form-control form-control-lg col-md-4 m-auto")}}
+                                    {% endif %}
+                                    <!-- last name  -->
+                                    {{ form.last_name.label(class="form-control-label col-md-2 m-auto")}}
+                                    {% if form.last_name.errors %}
+                                        {{form.last_name(class="form-control form-control-lg col-md-4 m-auto is-invalid")}}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.last_name.errors %}
+                                                <span class="col-md-12">{{ error }}</span>
+                                            {% endfor%}
+                                        </div>
+                                    {% else %}
+                                        {{form.last_name(class="form-control form-control-lg col-md-4 m-auto")}}
+                                    {% endif %}
+                                </div>
+
+                                <div class="form-group row">
+                                    <!-- email  -->
+                                    {{ form.email.label(class="form-control-label col-md-2")}}
+                                    {% if form.email.errors %}
+                                        {{form.email(class="form-control form-control-lg col-md-10 m-auto is-invalid")}}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.email.errors %}
+                                                <span class="col-md-12">{{ error }}</span>
+                                            {% endfor%}
+                                        </div>
+                                    {% else %}
+                                        {{form.email(class="form-control form-control-lg col-md-10 m-auto")}}
+                                    {% endif %}
+                                </div>
+                                <div class= "form-group row">
+                                    <div class="form-group row col-md-6 pl-0 m-auto">
+                                        <!-- phone  -->
+                                        {{ form.phone.label(class="form-control-label col-md-4 m-auto")}}
+                                        {% if form.phone.errors %}
+                                            {{form.phone(class="form-control form-control-lg col-md-8 m-auto is-invalid")}}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.phone.errors %}
+                                                    <span class="col-md-12 phone-span">{{ error }}</span>
+                                                {% endfor%}
+                                            </div>
+                                        {% else %}
+                                            {{form.phone(class="form-control form-control-lg col-md-8 m-auto")}}
+                                        {% endif %}
+                                    </div>
+                                    <div class="form-group row col-md-6 pl-0 m-auto">
+                                        <!-- country  -->
+                                        {{ form.country.label(class="form-control-label col-md-4 m-auto")}}
+                                        {% if form.country.errors %}
+                                            {{form.country(class="form-control form-control-lg col-md-8 m-auto is-invalid")}}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.country.errors %}
+                                                    <span class="col-md-12 phone-span">{{ error }}</span>
+                                                {% endfor%}
+                                            </div>
+                                        {% else %}
+                                            {{form.country(class="form-control form-control-lg col-md-8 m-auto")}}
+                                        {% endif %}
+                                    </div>
+                                </div>        
+                                <div class="form-group row">
+                                    <!-- state  -->
+                                    {{ form.state.label(class="form-control-label col-md-2 m-auto")}}
+                                    {% if form.state.errors %}
+                                        {{form.state(class="form-control form-control-lg col-md-4 m-auto is-invalid")}}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.state.errors %}
+                                                <span class="col-md-12">{{ error }}</span>
+                                            {% endfor%}
+                                        </div>
+                                    {% else %}
+                                        {{form.state(class="form-control form-control-lg col-md-4 m-auto")}}
+                                    {% endif %}
+                                    <!-- city  -->
+                                    {{ form.city.label(class="form-control-label col-md-2 m-auto")}}
+                                    {% if form.city.errors %}
+                                        {{form.city(class="form-control form-control-lg col-md-4 m-auto is-invalid")}}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.city.errors %}
+                                                <span class="col-md-12">{{ error }}</span>
+                                            {% endfor%}
+                                        </div>
+                                    {% else %}
+                                        {{form.city(class="form-control form-control-lg col-md-4 m-auto")}}
+                                    {% endif %}
+                                </div>
+
+                                <div class="form-group row">
+                                    <!-- street  -->
+                                    {{ form.street.label(class="form-control-label col-md-2 m-auto")}}
+                                    {% if form.street.errors %}
+                                        {{form.street(class="form-control form-control-lg col-md-7 m-auto is-invalid")}}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.street.errors %}
+                                                <span class="col-md-12">{{ error }}</span>
+                                            {% endfor%}
+                                        </div>
+                                    {% else %}
+                                        {{form.street(class="form-control form-control-lg col-md-7 m-auto")}}
+                                    {% endif %}
+                                    <!-- zip code  -->
+                                    {{ form.zip_code.label(class="form-control-label col-md-1 m-auto")}}
+                                    {% if form.zip_code.errors %}
+                                        {{form.zip_code(class="form-control form-control-lg col-md-2 m-auto is-invalid")}}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.zip_code.errors %}
+                                                <span class="col-md-12">{{ error }}</span>
+                                            {% endfor%}
+                                        </div>
+                                    {% else %}
+                                        {{form.zip_code(class="form-control form-control-lg col-md-2 m-auto")}}
+                                    {% endif %}
+                                </div>
+                                <div class="form-group row m-4">
+                                    <!-- picture  -->
+                                    {{ form.picture.label() }}
+                                    {{ form.picture(class="form-control-file") }}
+                                    {% if form.picture.errors %}
+                                        {% for error in form.picture.errors %}
+                                            <span class="text-danger">{{ error }}</span></br>
+                                        {% endfor%}
+                                    {% endif %}
+                                </div>
+                            </fieldset>
+                            <div class="form-group row">
+                                {{ form.submit(class="btn btn-warning btn-lg m-auto btn-submit")}}
+                            </div>
+                        </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock body%}

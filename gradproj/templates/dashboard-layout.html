@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="title icon" href="../static/img/logo.png">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/all.js" integrity="sha384-xymdQtn1n3lH2wcu0qhcdaOpQwyoarkgLVxC/wZ5q7h9gHtxICrpcaSUfygqZGOe" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard-style.css')}}">
+    {% if title %}
+    <title>Dashboard - {{ title }}</title>
+    {% else %}
+    <title>Dashboard</title>
+    {% endif %}
+    {% block head %}
+    {% endblock %}
+  </head>
+  <body> 
+    
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-md navbar-light">
+      <button class="navbar-toggler ml-auto mb-2 bg-light" type="button" data-toggle="collapse" data-target="#myNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <div class="container-fluid">
+          <div class="row">
+            <!-- sidebar -->
+            <div class="col-xl-2 col-lg-3 col-md-4 sidebar fixed-top">
+              <div class="bottom-border mt-5 pb-3">
+                <img src="{{ image_file }}" width="50" class="rounded-circle mr-3">
+                <a href="#" class="text-white">{{ current_user.username }}</a>
+              </div>
+              <ul class="navbar-nav flex-column mt-4">
+                <li class="nav-item"><a href="{{ url_for('dashboard') }}" class="nav-link text-white p-3 mb-2 sidebar-link"><i class="fas fa-home text-light fa-lg mr-3"></i>Dashboard</a></li>
+                <li class="nav-item"><a href="{{ url_for('account') }}" class="nav-link text-white p-3 mb-2 sidebar-link"><i class="fas fa-wrench text-light fa-lg mr-3"></i>Settings</a></li>
+                <!-- <li class="nav-item"><a href="#" class="nav-link text-white p-3 mb-2 sidebar-link"><i class="fas fa-user text-light fa-lg mr-3"></i>Profile</a></li> -->
+                <li class="nav-item"><a href="#" class="nav-link text-white p-3 mb-2 sidebar-link"><i class="fas fa-eye text-light fa-lg mr-3"></i>Observers</a></li>
+                <li class="nav-item"><a href="#" class="nav-link text-white p-3 mb-2 sidebar-link"><i class="fas fa-chart-bar text-light fa-lg mr-3"></i>Records</a></li>
+                <li class="nav-item"><a href="#" class="nav-link text-white p-3 mb-2 sidebar-link"><i class="fas fa-file-alt text-light fa-lg mr-3"></i>Documentation</a></li>
+              </ul>
+            </div>
+            <!-- end of sidebar -->
+
+            <!-- top-nav -->
+            <div class="col-xl-10 col-lg-9 col-md-8 ml-auto bg-dark fixed-top py-2 top-navbar">
+              <div class="row align-items-center">
+                <div class="col-md-4">
+                  {% if title %}
+                  <h4 class="text-warning text-uppercase mb-0">Dashboard - {{ title }}</h4>
+                  {% else %}
+                  <h4 class="text-warning text-uppercase mb-0">Dashboard</h4>
+                  {% endif %}
+                </div>
+                <div class="col-md-5">
+                  <form>
+                    <div class="input-group">
+                      <input type="text" class="form-control search-input text-warning" placeholder="Search...">
+                      <button type="button" class="btn btn-white search-button"><i class="fas fa-search text-warning"></i></button>
+                    </div>
+                  </form>
+                </div>
+                <div class="col-md-3">
+                  <ul class="navbar-nav">
+                    <li class="nav-item">
+                      <a class="nav-link text-warning" href="{{ url_for('home') }}">Home</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link text-warning" href="{{ url_for('home') }}#aboutus">About Us</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link text-warning" href="{{ url_for('home') }}#features">Features</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link text-warning" href="{{ url_for('home') }}#contact">Contact</a>
+                  </li>
+                    <li class="nav-item ml-md-auto"><a href="#" class="nav-link" data-toggle="modal" data-target="#sign-out"><i class="fas fa-sign-out-alt text-warning fa-lg"></i></a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- end of top-nav -->
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- end of navbar -->
+    <section>
+      <div class="row mt-5 mb-5 text-center">
+        <div class="col-xl-10 col-lg-9 col-md-8 ml-auto">
+          <div class="row align-items-center">
+            <div class="col-12 mb-4">
+              {% with messages = get_flashed_messages(with_categories= true) %} 
+              <!-- will allow us to use flash  -->
+                  {% if messages %}
+                      {% for category, message in messages %}
+                          <div class="alert alert-{{ category }} content ">
+                              {{ message }}
+                          </div>
+                      {% endfor %}
+                  {% endif %}
+              {% endwith %}
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- moda l -->
+    <div class="modal fade" id="sign-out">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Want to leave?</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            Press logout to leave
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-success" href="{{url_for('dashboard')}}" role="button">Stay Here</a>
+            <a class="btn btn-danger" href="{{url_for('logout')}}" role="button">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end of modal -->
+    {% block body %}
+    {% endblock body %}
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
