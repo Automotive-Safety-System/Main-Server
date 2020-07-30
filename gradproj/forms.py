@@ -3,7 +3,7 @@ from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from gradproj.models import User
+from gradproj.models import User, Vehicle
 
 # Registration Form 
 class RegistrationForm(FlaskForm):
@@ -78,7 +78,7 @@ class UpdateAccountForm(FlaskForm):
     city = StringField('City', validators=[DataRequired()])
     zip_code = StringField('ZIP')
     street = StringField('Street', validators=[DataRequired()])
-    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
+    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
     submit = SubmitField('Update')
 
 # username validation function 
@@ -102,3 +102,25 @@ class UpdateAccountForm(FlaskForm):
             if user:
                 raise ValidationError('That phone is taken. please choose another one!')
 
+# Login form
+class ObserverForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired(), Length(min= 2, max= 20)])
+    submit = SubmitField('Add')
+
+# username validation function
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user is None:
+           raise ValidationError('Username doesn\'t exist.')
+        if username.data == current_user.username:
+            raise ValidationError('You can\'t add yourself as an observer!')
+
+class VehicleForm(FlaskForm):
+    vehicle_model = StringField('Vehicle Model', validators=[DataRequired(), Length(min= 2, max= 20)])
+    plate_number = StringField('Plate Number', validators=[DataRequired(), Length(min= 2, max= 8)])
+    submit = SubmitField('Add')
+
+    def validate_plate_number(self, plate_number):
+        vehicle = Vehicle.query.filter_by(plate_number=plate_number.data).first()
+        if vehicle:
+            raise ValidationError('That plate number exists.')

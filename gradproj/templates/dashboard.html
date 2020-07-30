@@ -1,318 +1,205 @@
 {% extends "dashboard-layout.html" %}
 {% block body %}
-    <!-- cards -->
+    <!-- Vehicles -->
     <section>
       <div class="container-fluid">
         <div class="row">
           <div class="col-xl-10 col-lg-9 col-md-8 ml-auto">
-            <div class="row pt-md-5 mt-md-3 mb-5">
-              <div class="col-xl-3 col-sm-6 p-2">
-                <div class="card card-common">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                      <i class="fas fa-tachometer-alt fa-3x text-warning"></i>
-                        <div class="text-right text-secondary">
-                          <h5>Accelerometer</h5>
-                          <h3>{{data.accelerometer}}</h3>
+            <h4 class=" mb-4 text-center">Vehicles</h4>
+            <div>
+              {%for vehicle in data.vehicles %}
+                <div class="card">
+                  <div class="card-header">
+                    <button class="btn btn-block bg-dark text-warning text-left bg-black" data-toggle="collapse" data-target="#collapse{{loop.index}}" >
+                      <img src="../static/img/logo.png" class="mr-3 rounded" width="50">
+                      {{vehicle.vehicle_model}}
+                    </button>
+                  </div>
+                  <div class="collapse" id="collapse{{loop.index}}">
+                    <div class="card-body">
+                        <div class="row">
+                          <div class="col-xl-12 col-lg-11 col-md-10 ml-auto">
+                            <div class="row pt-md-5 mt-md-3 mb-5">
+                              <div class="col-xl-4 col-sm-6 p-2">
+                                <div class="card card-common">
+                                  <div class="card card-common">
+                                    <div class="card-body">
+                                      <div class="d-flex justify-content-between">
+                                        <i class="fas fa-tachometer-alt fa-3x text-warning"></i>
+                                        <div class="text-right text-secondary">
+                                          <h5>Accelerometer</h5>
+                                          <h3>{{vehicle.accelerometer}}</h3>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="card-footer text-secondary">
+                                      <i class="fas fa-sync mr-3"></i>
+                                      <span>Kilometer Per Second Squared</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4 col-sm-6 p-2">
+                                <div class="card card-common">
+                                  <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                      <i class="fas fa-map-marker-alt fa-3x text-primary"></i>
+                                      <div class="text-right text-secondary">
+                                        <h5>Last Location</h5>
+                                        <h3>{{vehicle.last_location}}</h3>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="card-footer text-secondary">
+                                    <i class="fas fa-sync mr-3"></i>
+                                    <span>Updated {{ vehicle.update_date }}</span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xl-4 col-sm-12 p-2">
+                                <div class="card card-common">
+                                  <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                      {% if "Running" in vehicle.status %}
+                                        <i class="fas fa-car fa-3x text-success"></i>
+                                      {% else %}
+                                        <i class="fas fa-car fa-3x text-danger"></i>
+                                      {% endif %}
+                                      <div class="text-right text-secondary">
+                                        <h5>Status</h5>
+                                        <h3>{{vehicle.status}}</h3>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="card-footer text-secondary">
+                                    <i class="fas fa-sync mr-3"></i>
+                                    <span>Updated {{vehicle.update_date}}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
+                      </div>
                     </div>
                   </div>
-                  <div class="card-footer text-secondary">
-                    <i class="fas fa-sync mr-3"></i>
-                    <span>Kilometer Per Second Squared</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-3 col-sm-6 p-2">
-                <div class="card card-common">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                      <i class="fas fa-map-marker-alt fa-3x text-primary"></i>
-                        <div class="text-right text-secondary">
-                          <h5>Location</h5>
-                          <h3>{{data.location}}</h3>
-                        </div>
-                    </div>
-                  </div>
-                  <div class="card-footer text-secondary">
-                    <i class="fas fa-sync mr-3"></i>
-                    <span>Updated 10PM</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-3 col-sm-6 p-2">
-                <div class="card card-common">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                      <i class="fas fa-users fa-3x text-info"></i>
-                        <div class="text-right text-secondary">
-                          <h5>Observe Requests</h5>
-                          <h3>{{data.observe_requests}}</h3>
-                        </div>
-                    </div>
-                  </div>
-                  <div class="card-footer text-secondary">
-                    <i class="fas fa-sync mr-3"></i>
-                    <span>Pending Observe Requests</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-3 col-sm-6 p-2">
-                <div class="card card-common">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                      <i class="fas fa-car fa-3x text-success"></i>
-                        <div class="text-right text-secondary">
-                          <h5>Status</h5>
-                          <h3>{{data.status}}</h3>
-                        </div>
-                    </div>
-                  </div>
-                  <div class="card-footer text-secondary">
-                    <i class="fas fa-sync mr-3"></i>
-                    <span>Updated Now</span>
-                  </div>
-                </div>
-              </div>
+              {% endfor %}
             </div>
           </div>
         </div>
       </div>
     </section>
-    <!-- end of cards -->
+    <!-- end of Vehicles -->
     <!-- tables -->
     <section>
-      <div class="row mb-5">
+      <div class="row mb-5 mt-5">
         <div class="col-xl-10 col-lg-9 col-md-8 ml-auto">
           <div class="row align-items-center">
             <div class="col-12 mb-4">
-              <h3 class="text-center mb-3">Observers</h3>
-              <table class="table table-striped bg-light text-center">
-                <thead>
-                  <tr class="text-muted">
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Phone Number</th>
-                    <th>Date Assigned</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th>1</th>
-                    <td>Khaled</td>
-                    <td>01278158298</td>
-                    <td>20/2/2020</td>
-                    <td><button type="button" class="btn btn-danger btn-sm">Remove</button></td>
-                  </tr>
-                  <tr>
-                    <th>2</th>
-                    <td>Khaled</td>
-                    <td>01278158298</td>
-                    <td>20/2/2020</td>
-                    <td><button type="button" class="btn btn-danger btn-sm">Remove</button></td>
-                  </tr>
-                  <tr>
-                    <th>3</th>
-                    <td>Khaled</td>
-                    <td>01278158298</td>
-                    <td>20/2/2020</td>
-                    <td><button type="button" class="btn btn-danger btn-sm">Remove</button></td>
-                  </tr>
-                  <tr>
-                    <th>4</th>
-                    <td>Khaled</td>
-                    <td>01278158298</td>
-                    <td>20/2/2020</td>
-                    <td><button type="button" class="btn btn-danger btn-sm">Remove</button></td>
-                  </tr>
-                </tbody>
-              </table>
-              <!-- pagination -->
-              <nav>
-                <ul class="pagination justify-content-center">
-                  <li class="page-item">
-                    <a href="#" class="page-link py-2 px-3">
-                      <span>&laquo;</span>
-                    </a>
-                  </li>
-                  <li class="page-item active">
-                    <a href="#" class="page-link py-2 px-3">
-                      <span>1</span>
-                    </a>
-                  </li>
-                  <li class="page-item">
-                    <a href="#" class="page-link py-2 px-3">
-                      <span>2</span>
-                    </a>
-                  </li>
-                  <li class="page-item">
-                    <a href="#" class="page-link py-2 px-3">
-                      <span>3</span>
-                    </a>
-                  </li>
-                  <li class="page-item">
-                    <a href="#" class="page-link py-2 px-3">
-                      <span>&raquo;</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-              <!-- end of pagination -->
-
+              <h3 class="text-center mb-3">Observe List</h3>
+              {%for observer in data.observers %}
+              <div class="col-12">
+                <div class="bg-dark text-warning text-left bg-black  rounded-pill">
+                  <div class="row">
+                    <div class="col-11">
+                      <img src="{{ observer.image_file }}" class="mr-3 rounded-circle p-1" width="50">
+                      {{observer.username}}
+                    </div>
+                    <div class="col-1 my-auto mx-auto">
+                      <button type="button" class="btn btn-danger btn-sm rounded-pill">Remove</button>
+                    </div>
+                  </div>
+                </div>
+                <table class="table table-striped bg-light text-center" style="border-radius:1.5rem;">
+                  <thead>
+                    <tr class="text-muted">
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Plate Number</th>
+                      <th>Accelerometer</th>
+                      <th>Last Location</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {%for vehicle in observer.vehicles %}
+                      <tr>
+                        <th>{{loop.index}}</th>
+                        <td>{{vehicle.vehicle_model}}</td>
+                        <td>{{vehicle.plate_number}}</td>
+                        <td>{{vehicle.accelerometer}}</td>
+                        <td>{{vehicle.last_location}}</td>
+                        <td>{{vehicle.status}}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+                {% endfor %}
             </div>
             <div class="col-12">
-              <h3 class="text-center mb-3">Pending Observe Requests</h3>
-              <table class="table table-dark table-hover text-center">
+              <h3 class="text-center mb-3 mt-3">Pending Observe Requests</h3>
+              <table class="table table-dark table-hover text-center bg-black">
                 <thead>
                   <tr class="text-light">
                     <th>#</th>
                     <th>Name</th>
-                    <th>Phone Number</th>
-                    <th>Request Date</th>
-                    <th>Status</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody class="text-warning">
-                  <tr>
-                    <th>1</th>
-                    <td>Khaled</td>
-                    <td>01278158298</td>
-                    <td>20/2/2020</td>
-                    <td><span class="badge badge-success w-75 py-2">Pending</span></td>
-                  </tr>
-                  <tr>
-                    <th>2</th>
-                    <td>Khaled</td>
-                    <td>01278158298</td>
-                    <td>25/05/2018</td>
-                    <td><span class="badge badge-success w-75 py-2">Pending</span></td>
-                  </tr>
-                  <tr>
-                    <th>3</th>
-                    <td>Khaled</td>
-                    <td>01278158298</td>
-                    <td>20/2/2020</td>
-                    <td><span class="badge badge-success w-75 py-2">Pending</span></td>
-                  </tr>
-                  <tr>
-                    <th>4</th>
-                    <td>Khaled</td>
-                    <td>01278158298</td>
-                    <td>20/2/2020</td>
-                    <td><span class="badge badge-success w-75 py-2">Pending</span></td>
-                  </tr>
-                  <tr>
-                    <th>5</th>
-                    <td>Khaled</td>
-                    <td>01278158298</td>
-                    <td>20/2/2020</td>
-                    <td><span class="badge badge-success w-75 py-2">Pending</span></td>
-                  </tr>
+                  {%for request in data.pending_observer_requests %}
+                    <tr>
+                      <th>{{loop.index}}</th>
+                      <td>{{request.username}}</td>
+                      <td><button type="button" class="btn btn-success btn-sm mr-5">Accept</button>
+                          <button type="button" class="btn btn-danger btn-sm">Remove</button>
+                      </td>
+                    </tr>
+                  {% endfor %}
                 </tbody>
               </table>
-              <!-- pagination -->
-              <nav>
-                <ul class="pagination justify-content-center">
-                  <li class="page-item">
-                    <a href="#" class="page-link py-2 px-3">
-                      <span>Previous</span>
-                    </a>
-                  </li>
-                  <li class="page-item active">
-                    <a href="#" class="page-link py-2 px-3">
-                      <span>1</span>
-                    </a>
-                  </li>
-                  <li class="page-item">
-                    <a href="#" class="page-link py-2 px-3">
-                      <span>2</span>
-                    </a>
-                  </li>
-                  <li class="page-item">
-                    <a href="#" class="page-link py-2 px-3">
-                      <span>3</span>
-                    </a>
-                  </li>
-                  <li class="page-item">
-                    <a href="#" class="page-link py-2 px-3">
-                      <span>Next</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-              <!-- end of pagination -->
             </div>
           </div>
         </div>
       </div>
     </section>
     <!-- end of tables -->
-
-    <!-- Patch Notes -->
     <section>
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-xl-10 col-lg-9 col-md-8 ml-auto">
-            <h4 class=" mb-4 text-center">Recent Patch Notes</h4>
-            <div>
-              <div class="card">
-                <div class="card-header">
-                  <button class="btn btn-block bg-dark text-warning text-left" data-toggle="collapse" data-target="#collapseOne">
-                    <img src="../static/img/logo.png" class="mr-3 rounded" width="50">
-                    Patch 0.0.1 Notes
-                  </button>
-                </div>
-                <div class="collapse" id="collapseOne">
-                  <div class="card-body">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illum dolorum minus cupiditate cumque voluptas, eveniet nulla nisi, esse nihil fugiat ea adipisci perferendis, nam magni officia aliquam enim tenetur eum.
-                  </div>
-                </div>
-              </div>
-              <div class="card">
-                <div class="card-header">
-                  <button class="btn btn-block bg-dark text-warning text-left" data-toggle="collapse" data-target="#collapseTwo">
-                    <img src="../static/img/logo.png" class="mr-3 rounded" width="50">
-                    Patch 0.0.1 Notes
-                  </button>
-                </div>
-                <div class="collapse" id="collapseTwo">
-                  <div class="card-body">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illum dolorum minus cupiditate cumque voluptas, eveniet nulla nisi, esse nihil fugiat ea adipisci perferendis, nam magni officia aliquam enim tenetur eum.
-                  </div>
-                </div>
-              </div>
-              <div class="card">
-                <div class="card-header">
-                  <button class="btn btn-block bg-dark text-warning text-left" data-toggle="collapse" data-target="#collapseThree">
-                    <img src="../static/img/logo.png" class="mr-3 rounded" width="50">
-                    Patch 0.0.1 Notes
-                     </button>
-                </div>
-                <div class="collapse" id="collapseThree">
-                  <div class="card-body">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illum dolorum minus cupiditate cumque voluptas, eveniet nulla nisi, esse nihil fugiat ea adipisci perferendis, nam magni officia aliquam enim tenetur eum.
-                  </div>
-                </div>
-              </div>
-              <div class="card">
-                <div class="card-header">
-                  <button class="btn btn-block bg-dark text-warning text-left" data-toggle="collapse" data-target="#collapseFour">
-                    <img src="../static/img/logo.png" class="mr-3 rounded" width="50">
-                    Patch 0.0.1 Notes
-                  </button>
-                </div>
-                <div class="collapse" id="collapseFour">
-                  <div class="card-body">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illum dolorum minus cupiditate cumque voluptas, eveniet nulla nisi, esse nihil fugiat ea adipisci perferendis, nam magni officia aliquam enim tenetur eum.
-                  </div>
-                </div>
-              </div>
+      <div class="row mb-5">
+        <div class="col-xl-10 col-lg-9 col-md-8 ml-auto">
+          <div class="row align-items-center">
+            <div class="col-12 mb-4">
+              <h3 class="text-center mb-3">Accident Records</h3>
+              <table class="table table-striped bg-light text-center">
+                <thead>
+                  <tr class="text-muted">
+                    <th>#</th>
+                    <th>Vehicle</th>
+                    <th>Plate Number</th>
+                    <th>Accelerometer</th>
+                    <th>Location</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {%for accident in data.accidents %}
+                    <tr>
+                      <th>{{loop.index}}</th>
+                      <td>{{accident.vehicle_model}}</td>
+                      <td>{{accident.plate_number}}</td>
+                      <td>{{accident.accelerometer}}</td>
+                      <td>{{accident.location}}</td>
+                      <td>{{accident.date}}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </div>
     </section>
-    <!-- End Patch Notes-->
+    <!-- end of tables -->
 {% endblock body %}
 

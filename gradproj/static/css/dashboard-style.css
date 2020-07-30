@@ -5,7 +5,9 @@ body {
   font-family: 'Lato', sans-serif;
   background-color: #eee;
 }
-
+.bg-black {
+    background-color: #000000 !important;
+}
 /* navbar */
 .sidebar {
   height: 100vh;
@@ -78,6 +80,9 @@ body {
   .top-navbar {
     position: static;
   }
+}
+.top-navbar {
+  background-color: #000000 !important;
 }
 /* end of navbar */
 

@@ -1,0 +1,47 @@
+{% extends "dashboard-layout.html" %} {% block head %}
+<link
+    rel="stylesheet"
+    type="text/css"
+    href="{{ url_for('static', filename='css/form.css')}}"
+/>
+{% endblock head%} {% block body %}
+<section>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-10 col-lg-9 col-md-8 ml-auto">
+                <div class="form-section col-lg-7 col-sm-12 ml-auto mr-auto content">
+                    <form action="" method="POST">
+                        <!-- adding CSRF token -->
+                        {{form.hidden_tag()}}
+                        <fieldset class="form-group">
+                            <legend
+                                class="border-bottom  mb-4 ml-auto form-section"
+                                style="text-align: center;"
+                            >
+                                LET YOUR FAMILY KNOW YOUR STATUS
+                            </legend>
+                                <div class="form-group row">
+                                    <!-- username  -->
+                                    {{ form.username.label(class="form-control-label col-md-2 m-auto")}}
+                                    {% if form.username.errors %}
+                                        {{form.username(class="form-control form-control-lg col-md-10 m-auto is-invalid")}}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.username.errors %}
+                                                <span class="col-md-12">{{ error }}</span>
+                                            {% endfor%}
+                                        </div>
+                                    {% else %}
+                                        {{form.username(class="form-control form-control-lg col-md-10 m-auto")}}
+                                    {% endif %}
+                                </div>
+                        </fieldset>
+                        <div class="form-group row">
+                            <!-- Submit btn  -->
+                            {{ form.submit(class="btn btn-warning btn-lg m-auto btn-submit") }}
+                        </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock body%}

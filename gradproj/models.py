@@ -11,13 +11,6 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-User_Address = db.Table('user_address',
-    db.Column('id', db.Integer, primary_key = True),
-    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-    db.Column('address_id', db.Integer, db.ForeignKey('address.id')),
-    UniqueConstraint('user_id','address_id')
-    )
-
 User_Contact = db.Table('user_contact',
     db.Column('id', db.Integer, primary_key = True),
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
@@ -32,6 +25,12 @@ User_Vehicle = db.Table('user_vehicle',
     UniqueConstraint('user_id','vehicle_id')
     )
 
+observation = db.Table('observers', db.Model.metadata,
+                                db.Column('observation_id', db.SMALLINT, primary_key=True),
+                                db.Column('observer_id', db.Integer, db.ForeignKey('user.id')),
+                                db.Column('observed_id', db.Integer, db.ForeignKey('user.id')),
+                                UniqueConstraint('observer_id', 'observed_id'))
+
 class User(db.Model, UserMixin):
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key = True)
@@ -39,13 +38,23 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique = True, nullable = False)
     first_name = db.Column(db.String(20), nullable = False)
     last_name = db.Column(db.String(20), nullable = False)
-    image_file = db.Column(db.String(20), nullable = False, default = 'default.jpg')
+    image_file = db.Column(db.String, nullable = False, default = 'default.jpg')
     password = db.Column(db.String(60), nullable = False)
     phone_number = db.Column(db.String(20), unique = True ,nullable = False)
     admin = db.Column(db.Boolean, nullable = False, default = False)
-    user_address = db.relationship('Address', secondary = User_Address, backref = 'users' ,lazy = 'dynamic')
+    address_id = db.Column(db.Integer, db.ForeignKey('address.id'))
     user_contact = db.relationship('Contact', secondary = User_Contact, backref = 'users',lazy = 'dynamic')
     user_vehicle = db.relationship('Vehicle', secondary = User_Vehicle, backref = 'users', lazy = 'dynamic')
+    observers = db.relationship(
+        'User',
+        secondary=observation,
+        primaryjoin=id == observation.c.observer_id,
+        secondaryjoin=id == observation.c.observed_id,
+        backref=db.backref('observation')
+    )
+    def equals(self, user):
+        if self.email == user.email:
+            return True
 
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(app.config['SECRET_KEY'], expires_sec)
@@ -68,20 +77,29 @@ class User(db.Model, UserMixin):
 class Address(db.Model):
     __tablename__ = "address"
     id = db.Column(db.Integer, primary_key = True)
-    postal_code = db.Column(db.String(10), nullable = False)
     country = db.Column(db.String(20), nullable = False)
     state = db.Column(db.String(20), nullable = False)
     city = db.Column(db.String(20), nullable = False)
     street = db.Column(db.String(20), nullable = False)
+    postal_code = db.Column(db.String(10), nullable = False)
+    users = db.relationship("User", backref='address', lazy=True)
+    db.UniqueConstraint(country, state, city, street, postal_code)
 
     def __repr__(self):
         return f"Address('{self.id}', '{self.postal_code}', '{self.country}', '{self.state}', '{self.city}', '{self.street}')"
+
+    def equals(self, address):
+        if self.country == address.country \
+            and self.state == address.state \
+            and self.city == address.city \
+            and self.street == address.street \
+            and self.postal_code == address.postal_code:
+            return True
 
 class Contact(db.Model):
     __tablename__ = "contact"
     id = db.Column(db.Integer, primary_key = True)
     cellphone = db.Column(db.String(20), unique = True, nullable = False)
-
     def __repr__(self):
         return f"Contact('{self.id}', '{self.cellphone}')"
 
@@ -89,7 +107,11 @@ class Vehicle(db.Model):
     __tablename__ = 'vehicle'
     id = db.Column(db.Integer, primary_key = True)
     plate_number = db.Column(db.String(10), unique = True, nullable = False)
+    status = db.Column(db.String, nullable = False, default = "Parked")
     accelerometer = db.Column(db.String(10), nullable = False , default = '0')
+    vehicle_model = db.Column(db.String, nullable = False)
+    location = db.Column(db.String)
+    update_date = db.Column(db.Date, nullable = False, default = datetime.today())
     accidents = db.relationship('Accident', backref = 'vehicles', lazy = 'dynamic')
 
     def __repr__(self):
@@ -99,8 +121,10 @@ class Accident(db.Model):
     __tablename__ = 'accident'
     id = db.Column(db.Integer, primary_key = True)
     time_date = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
+    location = db.Column(db.String, nullable = False)
+    accelerometer = db.Column(db.String(10), nullable = False , default = '0')
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable = False)
-    __table_args__ = (db.UniqueConstraint('time_date', 'vehicle_id'), )
+    db.UniqueConstraint(vehicle_id, location, time_date)
 
     def __repr__(self):
         return f"Accident('{self.id}', '{self.time_date}','{self.vehicle_id}')"

@@ -1,11 +1,12 @@
 import os
 import secrets
 from PIL import Image
+from datetime import datetime
 from flask import render_template, url_for, flash, redirect, request
 from gradproj import app, db, bcrypt
 from gradproj.forms import (RegistrationForm, LoginForm,
                             RequestResetFrom, ResetPasswordForm,
-                            UpdateAccountForm)
+                            UpdateAccountForm, ObserverForm, VehicleForm)
 from gradproj.models import * 
 from flask_login import login_user, current_user, logout_user, login_required
 from gradproj.helpers import send_reset_email
@@ -30,12 +31,29 @@ def register():
                     last_name=form.last_name.data,
                     password=hashed_password,
                     phone_number=form.phone.data)
-        db.session.add(user)
-        db.session.commit()
+        address = Address.query.filter_by(country = form.country.data,
+                          state = form.state.data,
+                          city = form.city.data,
+                          street = form.street.data,
+                          postal_code= form.zip_code.data).first()
+        if address is None:
+            address = Address(country = form.country.data,
+                              state = form.state.data,
+                              city = form.city.data,
+                              street = form.street.data,
+                              postal_code= form.zip_code.data)
+        try:
+            db.session.add(address)
+            db.session.add(user)
+            address.users.append(user)
+            db.session.commit()
+        except:
+            db.session.rollback()
+        finally:
+            db.session.close()
         flash(f'Account created for {form.username.data}!', 'warning')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
-
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -66,13 +84,58 @@ def logout():
 @app.route("/dashboard")
 @login_required
 def dashboard():
+    vehicles = []
+    accidents = []
+    for vehicle in current_user.user_vehicle:
+        vehicles.append({
+                'vehicle_model' : vehicle.vehicle_model,
+                'accelerometer' : vehicle.accelerometer,
+                'last_location' : vehicle.location,
+                'status' : vehicle.status,
+                'update_date' : vehicle.update_date.strftime('%Y/%m/%d')
+        })
+        for accident in vehicle.accidents:
+            accidents.append({
+                'vehicle_model' : vehicle.vehicle_model,
+                'plate_number' : vehicle.plate_number,
+                'location' : accident.location,
+                'accelerometer' : accident.accelerometer,
+                'date' : accident.time_date.strftime("%d/%m/%Y, %H:%M:%S")
+
+            })
+    observers = []
+    for observed in current_user.observers:
+        for observer in observed.observers:
+            if current_user.equals(observer):
+                observed_vehicles = []
+                for vehicle in observed.user_vehicle:
+                    observed_vehicles.append({
+                            'vehicle_model' : vehicle.vehicle_model,
+                            'accelerometer' : vehicle.accelerometer,
+                            'plate_number' : vehicle.plate_number,
+                            'last_location' : vehicle.location,
+                            'status' : vehicle.status,
+                    })
+                observers.append({
+                    'username' : observed.username,
+                    'image_file' : url_for('static', filename='profile_pics/' + observed.image_file),
+                    'vehicles' : observed_vehicles
+                })
+    pending_observer_requests = []
+    users = User.query.all()
+    for user in users:
+        for observed in user.observers:
+            if observed.equals(current_user):
+                for observer in observed.observers:
+                    if not observer.equals(user):
+                        pending_observer_requests.append({
+                            'username' : user.username,
+                        })
     data = {
-            'username' : 'Khaled Hisham',
-            'profile_picture' : '../static/img/logo.png',
-            'accelerometer' : '50',
-            'location' : 'NewYork',
-            'observe_requests' : '5',
-            'status' : 'Parked'
+            'vehicles' : vehicles,
+            'observers' : observers,
+            'pending_observer_requests' : pending_observer_requests,
+            'accidents' : accidents
         }
     image_file =    url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template('dashboard.html',  image_file = image_file ,title = 'HOME' ,data = data)
@@ -146,5 +209,44 @@ def account():
         form.last_name.data = current_user.last_name
         form.email.data = current_user.email
         form.phone.data = current_user.phone_number
+        form.country.data = current_user.address.country
+        form.state.data = current_user.address.state
+        form.city.data = current_user.address.city
+        form.street.data = current_user.address.street
+        form.zip_code.data = current_user.address.postal_code
     image_file =    url_for('static', filename='profile_pics/' + current_user.image_file)
-    return render_template('account.html',  image_file = image_file ,title = 'HOME', form = form)
+    return render_template('account.html',  image_file = image_file ,title = 'PROFILE', form = form)
+
+
+@app.route("/observer", methods=['GET', 'POST'])
+@login_required
+def observer():
+    form = ObserverForm()
+    if form.validate_on_submit():
+        try:
+            current_user.observers.append(User.query.filter_by(username=form.username.data).first())
+            db.session.commit()
+        except:
+            db.session.rollback()
+        finally:
+            db.session.close()
+
+        return redirect(url_for('observer'))
+    return render_template('observer.html' ,title = 'OBSERVER', form = form)
+
+@app.route("/vehicle", methods=['GET', 'POST'])
+@login_required
+def vehicle():
+    form = VehicleForm()
+    if form.validate_on_submit():
+        vehicle = Vehicle(vehicle_model=form.vehicle_model.data, plate_number=form.plate_number.data)
+        try:
+            db.session.add(vehicle)
+            current_user.user_vehicle.append(vehicle)
+            db.session.commit()
+        except:
+            db.session.rollback()
+        finally:
+            db.session.close()
+        return redirect(url_for('vehicle'))
+    return render_template('vehicle.html' ,title = 'VEHICLE', form = form)
