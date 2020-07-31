@@ -86,6 +86,8 @@ def logout():
 def dashboard():
     vehicles = []
     accidents = []
+    pending_observer_requests = []
+    observers = []
     for vehicle in current_user.user_vehicle:
         vehicles.append({
                 'vehicle_model' : vehicle.vehicle_model,
@@ -103,7 +105,6 @@ def dashboard():
                 'date' : accident.time_date.strftime("%d/%m/%Y, %H:%M:%S")
 
             })
-    observers = []
     for observed in current_user.observers:
         for observer in observed.observers:
             if current_user.equals(observer):
@@ -121,16 +122,23 @@ def dashboard():
                     'image_file' : url_for('static', filename='profile_pics/' + observed.image_file),
                     'vehicles' : observed_vehicles
                 })
-    pending_observer_requests = []
+#pending_observer_requests.append({
+#'username' : user.username,
+#})
     users = User.query.all()
     for user in users:
-        for observed in user.observers:
-            if observed.equals(current_user):
-                for observer in observed.observers:
-                    if not observer.equals(user):
+        for observer in user.observers:
+            if current_user.equals(observer) and observer.observers ==[]:
+                pending_observer_requests.append({
+                    'username' : user.username
+                })
+            else:
+                for observed in observer.observers:
+                    if not observed.equals(user):
                         pending_observer_requests.append({
-                            'username' : user.username,
+                        'username' : user.username
                         })
+
     data = {
             'vehicles' : vehicles,
             'observers' : observers,
