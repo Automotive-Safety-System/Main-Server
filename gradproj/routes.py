@@ -2,7 +2,7 @@ import os
 import secrets
 from PIL import Image
 from datetime import datetime
-from flask import render_template, url_for, flash, redirect, request
+from flask import render_template, url_for, flash, redirect, request, jsonify
 from gradproj import app, db, bcrypt
 from gradproj.forms import (RegistrationForm, LoginForm,
                             RequestResetFrom, ResetPasswordForm,
@@ -17,7 +17,7 @@ def home():
     return render_template("index.html")
 
 
-@app.route("/register", methods=['GET', 'POST'])
+@app.route("/register")
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
@@ -81,7 +81,7 @@ def logout():
     return redirect(url_for('home'))
 
 
-@app.route("/dashboard")
+@app.route("/dashboard", methods=['GET', 'POST'])
 @login_required
 def dashboard():
     vehicles = []
@@ -122,9 +122,7 @@ def dashboard():
                     'image_file' : url_for('static', filename='profile_pics/' + observed.image_file),
                     'vehicles' : observed_vehicles
                 })
-#pending_observer_requests.append({
-#'username' : user.username,
-#})
+
     users = User.query.all()
     for user in users:
         for observer in user.observers:
@@ -258,3 +256,69 @@ def vehicle():
             db.session.close()
         return redirect(url_for('vehicle'))
     return render_template('vehicle.html' ,title = 'VEHICLE', form = form)
+
+@app.route('/dashboard/observer/<observer_username>/delete', methods=['DELETE'])
+@login_required
+def delete_observers(observer_username):
+    print(observer_username)
+    error = False
+    try:
+        user_observers = current_user.observers
+        for ob in user_observers:
+            if ob.username == observer_username:
+                observer = ob
+        current_user.observers.remove(observer)
+        for observed in observer.observers:
+            if observed.equals(current_user):
+                observer.observers.remove(observed)
+        db.session.commit()
+    except():
+        db.session.rollback()
+        error = True
+    finally:
+        db.session.close()
+    if error:
+        abort(500)
+    else:
+        return jsonify({'success': True})
+
+@app.route('/dashboard/observer/request/<request_username>/delete', methods=['DELETE'])
+@login_required
+def delete_observer_request(request_username):
+    print(request_username)
+    error = False
+    try:
+        user = User.query.filter_by(username=request_username).first()
+        for ob in user.observers:
+            if ob.equals(current_user):
+                user.observers.remove(current_user)
+        db.session.commit()
+    except():
+        db.session.rollback()
+        error = True
+    finally:
+        db.session.close()
+    if error:
+        abort(500)
+    else:
+        return jsonify({'success': True})
+
+
+@app.route('/dashboard/observer/request/<request_username>/accept', methods=['POST'])
+@login_required
+def accept_observer_request(request_username):
+    print(request_username)
+    error = False
+    try:
+        user = User.query.filter_by(username=request_username).first()
+        current_user.observers.append(user)
+        db.session.commit()
+    except():
+        db.session.rollback()
+        error = True
+    finally:
+        db.session.close()
+    if error:
+        abort(500)
+    else:
+        return jsonify({'success': True})

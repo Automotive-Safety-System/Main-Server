@@ -98,7 +98,7 @@
             <div class="col-12 mb-4">
               <h3 class="text-center mb-3">Observe List</h3>
               {%for observer in data.observers %}
-              <div class="col-12">
+              <div class="col-12" id = "observer-{{observer.username}}">
                 <div class="bg-dark text-warning text-left bg-black  rounded-pill">
                   <div class="row">
                     <div class="col-11">
@@ -106,7 +106,7 @@
                       {{observer.username}}
                     </div>
                     <div class="col-1 my-auto mx-auto">
-                      <button type="button" class="btn btn-danger btn-sm rounded-pill">Remove</button>
+                      <button type="button" data-id="remove-observer-{{observer.username}}" class="btn btn-danger btn-sm rounded-pill delete-observer">Remove</button>
                     </div>
                   </div>
                 </div>
@@ -149,11 +149,11 @@
                 </thead>
                 <tbody class="text-warning">
                   {%for request in data.pending_observer_requests %}
-                    <tr>
+                    <tr id="observer-request-{{request.username}}">
                       <td>{{loop.index}}</td>
                       <td>{{request.username}}</td>
-                      <td><button type="button" class="btn btn-success btn-sm mr-5">Accept</button>
-                          <button type="button" class="btn btn-danger btn-sm">Remove</button>
+                      <td><button type="button" data-id="accept-observer-request-{{request.username}}" class="btn btn-success btn-sm mr-5 accept-observer-request">Accept</button>
+                          <button type="button" data-id="delete-observer-request-{{request.username}}" class="btn btn-danger btn-sm delete-observer-request">Remove</button>
                       </td>
                     </tr>
                   {% endfor %}
@@ -171,9 +171,9 @@
           <div class="row align-items-center">
             <div class="col-12 mb-4">
               <h3 class="text-center mb-3">Accident Records</h3>
-              <table class="table table-striped bg-light text-center">
+              <table class="table table-striped bg-black text-center">
                 <thead>
-                  <tr class="text-muted">
+                  <tr class="text-light">
                     <th>#</th>
                     <th>Vehicle</th>
                     <th>Plate Number</th>
@@ -200,6 +200,77 @@
         </div>
       </div>
     </section>
+    <script>
+      let deleteBtns;
+      deleteBtns = document.querySelectorAll(".delete-observer");
+      let observerUsername;
+      for (let i = 0; i < deleteBtns.length; i++) {
+        const deleteBtn = deleteBtns[i];
+        deleteBtn.onclick = function(e) {
+          console.log("Delete event: ", e);
+          const observerDeleteButtonDataId = e.target.dataset.id;
+          var pieces = observerDeleteButtonDataId.split("-")
+          observerUsername = pieces[pieces.length - 1]
+          console.log(observerUsername)
+          fetch('/dashboard/observer/'+ observerUsername + '/delete',{
+            method: 'DELETE'
+          }).then(function() {
+            console.log('Parent?', e.target);
+            const item = document.getElementById("observer-" + observerUsername)
+            item.remove();
+            })
+            .catch(function(e) {
+              console.error(e);
+            });
+          };
+      }
+
+      deleteBtns = document.querySelectorAll(".delete-observer-request");
+      let requestUsername;
+      for (let i = 0; i < deleteBtns.length; i++) {
+        const deleteBtn = deleteBtns[i];
+        deleteBtn.onclick = function(e) {
+          console.log("Delete event: ", e);
+          const observerRequestDeleteButtonDataId = e.target.dataset.id;
+          var pieces = observerRequestDeleteButtonDataId.split("-")
+          requestUsername = pieces[pieces.length - 1]
+          console.log(requestUsername)
+          fetch('/dashboard/observer/request/'+ requestUsername + '/delete',{
+            method: 'DELETE'
+          }).then(function() {
+            console.log('Parent?', e.target);
+            const item = document.getElementById("observer-request-" + requestUsername)
+            item.remove();
+            })
+            .catch(function(e) {
+              console.error(e);
+            });
+          };
+      }
+
+      let acceptBtns = document.querySelectorAll(".accept-observer-request");
+      for (let i = 0; i < acceptBtns.length; i++) {
+        const acceptBtn = acceptBtns[i];
+        acceptBtn.onclick = function(e) {
+          console.log("Accept event: ", e);
+          const observerRequestAccpetButtonDataId = e.target.dataset.id;
+          var pieces = observerRequestAccpetButtonDataId.split("-")
+          requestUsername = pieces[pieces.length - 1]
+          console.log(requestUsername)
+          fetch('/dashboard/observer/request/'+ requestUsername + '/accept',{
+            method: 'POST'
+          }).then(function() {
+            console.log('Parent?', e.target);
+            const item = document.getElementById("observer-request-" + requestUsername)
+            item.remove();
+            })
+            .catch(function(e) {
+              console.error(e);
+            });
+          };
+      }
+    </script>
+  <script type="text/javascript" src="../static/js/dashboard-buttons.js"></script>
     <!-- end of tables -->
 {% endblock body %}
 
