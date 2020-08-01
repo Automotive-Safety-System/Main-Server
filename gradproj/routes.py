@@ -11,6 +11,9 @@ from gradproj.models import *
 from flask_login import login_user, current_user, logout_user, login_required
 from gradproj.helpers import send_reset_email
 import reverse_geocoder as rg
+import ast
+
+
 
 @app.route("/")
 @app.route("/home")
@@ -328,7 +331,11 @@ def accept_observer_request(request_username):
 # API
 @app.route('/api/receive', methods=['POST'])
 def receive():
-    data = request.get_json(force=True)
+    print("shit")
+    data = ast.literal_eval(request.get_json(force=True))
+    # print(all_data + "\n")
+    # data = ast.literal_eval(all_data['payload'])
+    print(data)
     error = False
     try:
         user_vehicle = Vehicle.query.filter_by(vehicle_model=data['vehicle']).first()
