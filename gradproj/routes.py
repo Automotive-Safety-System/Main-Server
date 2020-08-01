@@ -10,6 +10,7 @@ from gradproj.forms import (RegistrationForm, LoginForm,
 from gradproj.models import * 
 from flask_login import login_user, current_user, logout_user, login_required
 from gradproj.helpers import send_reset_email
+import reverse_geocoder as rg
 
 @app.route("/")
 @app.route("/home")
@@ -17,7 +18,7 @@ def home():
     return render_template("index.html")
 
 
-@app.route("/register")
+@app.route("/register", methods=['POST', 'GET'])
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
@@ -312,6 +313,47 @@ def accept_observer_request(request_username):
     try:
         user = User.query.filter_by(username=request_username).first()
         current_user.observers.append(user)
+        db.session.commit()
+    except():
+        db.session.rollback()
+        error = True
+    finally:
+        db.session.close()
+    if error:
+        abort(500)
+    else:
+        return jsonify({'success': True})
+
+
+# API
+@app.route('/api/receive', methods=['POST'])
+def receive():
+    data = request.get_json(force=True)
+    error = False
+    try:
+        user_vehicle = Vehicle.query.filter_by(vehicle_model=data['vehicle']).first()
+        print(user_vehicle)
+        if data['type'] == 'accelerometer':
+            user_vehicle.accelerometer = data['accelerometer']
+        elif data['type'] == 'location':
+            coordinates = data['location']
+            location = rg.search(coordinates)[0]['name'] + \
+                       "," + " " + rg.search(coordinates)[0]['admin1']
+            user_vehicle.location = location
+        elif data['type'] == 'accident':
+            time_date = datetime.now()
+            coordinates = data['location']
+            location = rg.search(coordinates)[0]['name'] + \
+                       "," + " " + rg.search(coordinates)[0]['admin1']
+            accelerometer = data['accelerometer']
+            vehicle_id = user_vehicle.id
+            accident = Accident(time_date=time_date,
+                                location=location,
+                                accelerometer=accelerometer,
+                                vehicle_id=vehicle_id)
+            db.session.add(accident)
+            user_vehicle.accidents.append(accident)
+
         db.session.commit()
     except():
         db.session.rollback()
