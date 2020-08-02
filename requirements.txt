@@ -1,17 +1,24 @@
 bcrypt==3.1.7
+blinker==1.4
 certifi==2019.11.28
 cffi==1.14.0
 Click==7.0
 Flask==1.1.1
 Flask-Bcrypt==0.7.1
+Flask-Cors==3.0.8
 Flask-Login==0.5.0
+Flask-Mail==0.9.1
 Flask-SQLAlchemy==2.4.1
 Flask-WTF==0.14.3
 itsdangerous==1.1.0
 Jinja2==2.11.1
-MarkupSafe==1.1.1
+MarkupSafe @ file:///tmp/build/80754af9/markupsafe_1594371495811/work
+numpy==1.19.1
+Pillow==7.2.0
 psycopg2-binary==2.8.4
 pycparser==2.19
+reverse-geocoder==1.5.1
+scipy==1.5.2
 six==1.14.0
 SQLAlchemy==1.3.13
 Werkzeug==1.0.0
