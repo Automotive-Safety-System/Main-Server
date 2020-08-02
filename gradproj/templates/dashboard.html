@@ -141,13 +141,13 @@
               <h3 class="text-center mb-3 mt-3">Pending Observe Requests</h3>
               <table class="table table-dark table-hover text-center bg-black">
                 <thead>
-                  <tr class="text-light">
+                  <tr class="text-warning">
                     <th>#</th>
                     <th>Name</th>
                     <th>Action</th>
                   </tr>
                 </thead>
-                <tbody class="text-warning">
+                <tbody class="text-light">
                   {%for request in data.pending_observer_requests %}
                     <tr id="observer-request-{{request.username}}">
                       <td>{{loop.index}}</td>
@@ -170,10 +170,10 @@
         <div class="col-xl-10 col-lg-9 col-md-8 ml-auto">
           <div class="row align-items-center">
             <div class="col-12 mb-4">
-              <h3 class="text-center mb-3">Accident Records</h3>
+              <h3 class="text-center mb-3" id="records">Accident Records</h3>
               <table class="table table-striped bg-black text-center">
                 <thead>
-                  <tr class="text-light">
+                  <tr class="text-warning">
                     <th>#</th>
                     <th>Vehicle</th>
                     <th>Plate Number</th>
@@ -184,7 +184,7 @@
                 </thead>
                 <tbody>
                   {%for accident in data.accidents %}
-                    <tr>
+                    <tr class="text-light">
                       <th>{{loop.index}}</th>
                       <td>{{accident.vehicle_model}}</td>
                       <td>{{accident.plate_number}}</td>

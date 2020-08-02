@@ -6,7 +6,8 @@ from flask import render_template, url_for, flash, redirect, request, jsonify
 from gradproj import app, db, bcrypt
 from gradproj.forms import (RegistrationForm, LoginForm,
                             RequestResetFrom, ResetPasswordForm,
-                            UpdateAccountForm, ObserverForm, VehicleForm)
+                            UpdateAccountForm, ObserverForm,
+                            VehicleForm, EmergencyForm)
 from gradproj.models import * 
 from flask_login import login_user, current_user, logout_user, login_required
 from gradproj.helpers import send_reset_email
@@ -248,6 +249,9 @@ def observer():
 @login_required
 def vehicle():
     form = VehicleForm()
+    vehicle = Vehicle.query.filter_by(plate_number= form.plate_number.data).first()
+    if vehicle is None:
+        vehicle = vehicle(cellphone=form.cellphone.data)
     if form.validate_on_submit():
         vehicle = Vehicle(vehicle_model=form.vehicle_model.data, plate_number=form.plate_number.data)
         try:
@@ -327,6 +331,25 @@ def accept_observer_request(request_username):
     else:
         return jsonify({'success': True})
 
+@app.route("/emergency", methods=['GET', 'POST'])
+@login_required
+def emergency():
+    form = EmergencyForm()
+    if form.validate_on_submit():
+        cellphone = Contact.query.filter_by(cellphone= form.cellphone.data).first()
+        if cellphone is None:
+            cellphone = Contact(cellphone=form.cellphone.data)
+        try:
+            db.session.add(cellphone)
+            current_user.user_contact.append(cellphone)
+            db.session.commit()
+        except:
+            db.session.rollback()
+        finally:
+            db.session.close()
+
+        return redirect(url_for('emergency'))
+    return render_template('emergency.html' ,title = 'EMERGENCY', form = form)
 
 # API
 @app.route('/api/receive', methods=['POST'])

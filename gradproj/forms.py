@@ -102,7 +102,7 @@ class UpdateAccountForm(FlaskForm):
             if user:
                 raise ValidationError('That phone is taken. please choose another one!')
 
-# Login form
+# Oberserver form
 class ObserverForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min= 2, max= 20)])
     submit = SubmitField('Add')
@@ -115,6 +115,7 @@ class ObserverForm(FlaskForm):
         if username.data == current_user.username:
             raise ValidationError('You can\'t add yourself as an observer!')
 
+# Vehicle form
 class VehicleForm(FlaskForm):
     vehicle_model = StringField('Vehicle Model', validators=[DataRequired(), Length(min= 2, max= 20)])
     plate_number = StringField('Plate Number', validators=[DataRequired(), Length(min= 2, max= 8)])
@@ -124,3 +125,8 @@ class VehicleForm(FlaskForm):
         vehicle = Vehicle.query.filter_by(plate_number=plate_number.data).first()
         if vehicle:
             raise ValidationError('That plate number exists.')
+
+# Emergency form
+class EmergencyForm(FlaskForm):
+    cellphone = StringField('Cell Phone', validators=[DataRequired(), Length(min=11, max=12)])
+    submit = SubmitField('Add')

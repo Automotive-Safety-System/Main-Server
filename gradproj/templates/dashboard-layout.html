@@ -41,8 +41,8 @@
                 <li class="nav-item"><a href="{{ url_for('account') }}" class="nav-link text-white p-3 mb-2 sidebar-link"><i class="fas fa-user text-light fa-lg mr-3"></i>Profile</a></li>
                 <li class="nav-item"><a href="{{url_for('observer')}}" class="nav-link text-white p-3 mb-2 sidebar-link"><i class="fas fa-eye text-light fa-lg mr-3"></i>Observer</a></li>
                 <li class="nav-item"><a href="{{url_for('vehicle')}}" class="nav-link text-white p-3 mb-2 sidebar-link"><i class="fas fa-car text-light fa-lg mr-3"></i>Vehicle</a></li>
-                <li class="nav-item"><a href="#" class="nav-link text-white p-3 mb-2 sidebar-link"><i class="fas fa-chart-bar text-light fa-lg mr-3"></i>Records</a></li>
-                <li class="nav-item"><a href="#" class="nav-link text-white p-3 mb-2 sidebar-link"><i class="fas fa-phone text-light fa-lg mr-3"></i>Emergency</a></li>
+                <li class="nav-item"><a href="{{ url_for('dashboard') }}#records" class="nav-link text-white p-3 mb-2 sidebar-link"><i class="fas fa-chart-bar text-light fa-lg mr-3"></i>Records</a></li>
+                <li class="nav-item"><a href="{{url_for('emergency')}}" class="nav-link text-white p-3 mb-2 sidebar-link"><i class="fas fa-phone text-light fa-lg mr-3"></i>Emergency</a></li>
               </ul>
             </div>
             <!-- end of sidebar -->
