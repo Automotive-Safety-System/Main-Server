@@ -8,12 +8,11 @@ from gradproj.forms import (RegistrationForm, LoginForm,
                             RequestResetFrom, ResetPasswordForm,
                             UpdateAccountForm, ObserverForm,
                             VehicleForm, EmergencyForm)
-from gradproj.models import * 
+from gradproj.models import *
 from flask_login import login_user, current_user, logout_user, login_required
 from gradproj.helpers import send_reset_email
 import reverse_geocoder as rg
 import ast
-
 
 
 @app.route("/")
@@ -31,22 +30,22 @@ def register():
         hashed_password = bcrypt.generate_password_hash(
             form.password.data).decode('utf-8')
         user = User(username=form.username.data,
-                    email=form.email.data, 
+                    email=form.email.data,
                     first_name=form.first_name.data,
                     last_name=form.last_name.data,
                     password=hashed_password,
                     phone_number=form.phone.data)
-        address = Address.query.filter_by(country = form.country.data,
-                          state = form.state.data,
-                          city = form.city.data,
-                          street = form.street.data,
-                          postal_code= form.zip_code.data).first()
+        address = Address.query.filter_by(country=form.country.data,
+                                          state=form.state.data,
+                                          city=form.city.data,
+                                          street=form.street.data,
+                                          postal_code=form.zip_code.data).first()
         if address is None:
-            address = Address(country = form.country.data,
-                              state = form.state.data,
-                              city = form.city.data,
-                              street = form.street.data,
-                              postal_code= form.zip_code.data)
+            address = Address(country=form.country.data,
+                              state=form.state.data,
+                              city=form.city.data,
+                              street=form.street.data,
+                              postal_code=form.zip_code.data)
         try:
             db.session.add(address)
             db.session.add(user)
@@ -59,6 +58,7 @@ def register():
         flash(f'Account created for {form.username.data}!', 'warning')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
+
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -95,19 +95,19 @@ def dashboard():
     observers = []
     for vehicle in current_user.user_vehicle:
         vehicles.append({
-                'vehicle_model' : vehicle.vehicle_model,
-                'accelerometer' : vehicle.accelerometer,
-                'last_location' : vehicle.location,
-                'status' : vehicle.status,
-                'update_date' : vehicle.update_date.strftime('%Y/%m/%d')
+            'vehicle_model': vehicle.vehicle_model,
+            'accelerometer': vehicle.accelerometer,
+            'last_location': vehicle.location,
+            'status': vehicle.status,
+            'update_date': vehicle.update_date.strftime('%Y/%m/%d')
         })
         for accident in vehicle.accidents:
             accidents.append({
-                'vehicle_model' : vehicle.vehicle_model,
-                'plate_number' : vehicle.plate_number,
-                'location' : accident.location,
-                'accelerometer' : accident.accelerometer,
-                'date' : accident.time_date.strftime("%d/%m/%Y, %H:%M:%S")
+                'vehicle_model': vehicle.vehicle_model,
+                'plate_number': vehicle.plate_number,
+                'location': accident.location,
+                'accelerometer': accident.accelerometer,
+                'date': accident.time_date.strftime("%d/%m/%Y, %H:%M:%S")
 
             })
     for observed in current_user.observers:
@@ -116,40 +116,40 @@ def dashboard():
                 observed_vehicles = []
                 for vehicle in observed.user_vehicle:
                     observed_vehicles.append({
-                            'vehicle_model' : vehicle.vehicle_model,
-                            'accelerometer' : vehicle.accelerometer,
-                            'plate_number' : vehicle.plate_number,
-                            'last_location' : vehicle.location,
-                            'status' : vehicle.status,
+                        'vehicle_model': vehicle.vehicle_model,
+                        'accelerometer': vehicle.accelerometer,
+                        'plate_number': vehicle.plate_number,
+                        'last_location': vehicle.location,
+                        'status': vehicle.status,
                     })
                 observers.append({
-                    'username' : observed.username,
-                    'image_file' : url_for('static', filename='profile_pics/' + observed.image_file),
-                    'vehicles' : observed_vehicles
+                    'username': observed.username,
+                    'image_file': url_for('static', filename='profile_pics/' + observed.image_file),
+                    'vehicles': observed_vehicles
                 })
 
     users = User.query.all()
     for user in users:
         for observer in user.observers:
-            if current_user.equals(observer) and observer.observers ==[]:
+            if current_user.equals(observer) and observer.observers == []:
                 pending_observer_requests.append({
-                    'username' : user.username
+                    'username': user.username
                 })
             else:
                 for observed in observer.observers:
                     if not observed.equals(user):
                         pending_observer_requests.append({
-                        'username' : user.username
+                            'username': user.username
                         })
 
     data = {
-            'vehicles' : vehicles,
-            'observers' : observers,
-            'pending_observer_requests' : pending_observer_requests,
-            'accidents' : accidents
-        }
-    image_file =    url_for('static', filename='profile_pics/' + current_user.image_file)
-    return render_template('dashboard.html',  image_file = image_file ,title = 'HOME' ,data = data)
+        'vehicles': vehicles,
+        'observers': observers,
+        'pending_observer_requests': pending_observer_requests,
+        'accidents': accidents
+    }
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    return render_template('dashboard.html', image_file=image_file, title='HOME', data=data)
 
 
 @app.route("/reset_password", methods=['GET', 'POST'])
@@ -162,7 +162,7 @@ def reset_request():
         send_reset_email(user)
         flash('An email has been sent with instructions to reset your password.', 'warning')
         return redirect(url_for('login'))
-    return render_template('reset_request.html', title='Reset Password', form = form)
+    return render_template('reset_request.html', title='Reset Password', form=form)
 
 
 @app.route("/reset_password/<token>", methods=['GET', 'POST'])
@@ -181,21 +181,22 @@ def reset_token(token):
         db.session.commit()
         flash('your password has been updated!', 'warning')
         return redirect(url_for('login'))
-    return render_template('reset_token.html', title='Make a new password', form = form)
+    return render_template('reset_token.html', title='Make a new password', form=form)
 
 
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
-    _, file_ext = os.path.splitext(form_picture.filename)  
+    _, file_ext = os.path.splitext(form_picture.filename)
     picture_filename = random_hex + file_ext
     picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_filename)
 
-    output_size = (125,125)
+    output_size = (125, 125)
     image = Image.open(form_picture)
     image.thumbnail(output_size)
     image.save(picture_path)
-    
+
     return picture_filename
+
 
 @app.route("/account", methods=['GET', 'POST'])
 @login_required
@@ -209,7 +210,7 @@ def account():
         current_user.username = form.username.data
         current_user.first_name = form.first_name.data
         current_user.last_name = form.first_name.data
-        current_user.email = form.email.data        
+        current_user.email = form.email.data
         current_user.phone_number = form.phone.data
         db.session.commit()
         flash('Your account has been updated!', 'success')
@@ -225,8 +226,8 @@ def account():
         form.city.data = current_user.address.city
         form.street.data = current_user.address.street
         form.zip_code.data = current_user.address.postal_code
-    image_file =    url_for('static', filename='profile_pics/' + current_user.image_file)
-    return render_template('account.html',  image_file = image_file ,title = 'PROFILE', form = form)
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    return render_template('account.html', image_file=image_file, title='PROFILE', form=form)
 
 
 @app.route("/observer", methods=['GET', 'POST'])
@@ -243,15 +244,16 @@ def observer():
             db.session.close()
 
         return redirect(url_for('observer'))
-    return render_template('observer.html' ,title = 'OBSERVER', form = form)
+    return render_template('observer.html', title='OBSERVER', form=form)
+
 
 @app.route("/vehicle", methods=['GET', 'POST'])
 @login_required
 def vehicle():
     form = VehicleForm()
-    vehicle = Vehicle.query.filter_by(plate_number= form.plate_number.data).first()
+    vehicle = Vehicle.query.filter_by(plate_number=form.plate_number.data).first()
     if vehicle is None:
-        vehicle = vehicle(cellphone=form.cellphone.data)
+        vehicle = Vehicle(plate_number=form.plate_number.data)
     if form.validate_on_submit():
         vehicle = Vehicle(vehicle_model=form.vehicle_model.data, plate_number=form.plate_number.data)
         try:
@@ -263,7 +265,8 @@ def vehicle():
         finally:
             db.session.close()
         return redirect(url_for('vehicle'))
-    return render_template('vehicle.html' ,title = 'VEHICLE', form = form)
+    return render_template('vehicle.html', title='VEHICLE', form=form)
+
 
 @app.route('/dashboard/observer/<observer_username>/delete', methods=['DELETE'])
 @login_required
@@ -289,6 +292,7 @@ def delete_observers(observer_username):
         abort(500)
     else:
         return jsonify({'success': True})
+
 
 @app.route('/dashboard/observer/request/<request_username>/delete', methods=['DELETE'])
 @login_required
@@ -331,12 +335,19 @@ def accept_observer_request(request_username):
     else:
         return jsonify({'success': True})
 
+
+@app.route("/map", methods=['POST', 'GET'])
+@login_required
+def car_map():
+    return render_template('map.html', title='EMERGENCY')
+
+
 @app.route("/emergency", methods=['GET', 'POST'])
 @login_required
 def emergency():
     form = EmergencyForm()
     if form.validate_on_submit():
-        cellphone = Contact.query.filter_by(cellphone= form.cellphone.data).first()
+        cellphone = Contact.query.filter_by(cellphone=form.cellphone.data).first()
         if cellphone is None:
             cellphone = Contact(cellphone=form.cellphone.data)
         try:
@@ -349,7 +360,8 @@ def emergency():
             db.session.close()
 
         return redirect(url_for('emergency'))
-    return render_template('emergency.html' ,title = 'EMERGENCY', form = form)
+    return render_template('emergency.html', title='EMERGENCY', form=form)
+
 
 # API
 @app.route('/api/receive', methods=['POST'])
