@@ -373,18 +373,20 @@ def receive():
     print(data)
     error = False
     try:
-        user_vehicle = Vehicle.query.filter_by(vehicle_model=data['vehicle']).first()
+        user_vehicle = Vehicle.query.filter_by(plate_number=data['id']).first()
         print(user_vehicle)
         if data['type'] == 'accelerometer':
             user_vehicle.accelerometer = data['accelerometer']
         elif data['type'] == 'location':
-            coordinates = data['location']
+            coordinates = [data['latitude'], data['longitude']]
             location = rg.search(coordinates)[0]['name'] + \
                        "," + " " + rg.search(coordinates)[0]['admin1']
             user_vehicle.location = location
+            user_vehicle.latitude = data['latitude']
+            user_vehicle.longitude = data['longitude']
         elif data['type'] == 'accident':
             time_date = datetime.now()
-            coordinates = data['location']
+            coordinates = [data['latitude'], data['longitude']]
             location = rg.search(coordinates)[0]['name'] + \
                        "," + " " + rg.search(coordinates)[0]['admin1']
             accelerometer = data['accelerometer']
