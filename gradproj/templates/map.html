@@ -1,116 +1,126 @@
 {% extends "dashboard-layout.html" %}{% block head %}
-    <link
-            rel="stylesheet"
-            type="text/css"
-            href="{{ url_for('static', filename='css/form.css') }}"
-    />
-    <script type="text/javascript"
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6L7HylZmg06Qt_gnpwC4qbREPXg4PNaM&libraries=places"></script>
-    <script>
-        let source = {
-            lat: 30.294674,
-            lng: 31.743588
-        };
-        let destination;
-        let directionsDisplay;
-        let directionsService = new google.maps.DirectionsService();
-        google.maps.event.addDomListener(window, 'load', function () {
-            //new google.maps.places.SearchBox(document.getElementById('Source'));
-            new google.maps.places.SearchBox(document.getElementById('Destination'));
-            directionsDisplay = new google.maps.DirectionsRenderer({'draggable': true});
+<link
+    rel="stylesheet"
+    type="text/css"
+    href="{{ url_for('static', filename='css/form.css') }}"
+/>
+<script type="text/javascript" src="PUT API GOOGLE KEY"></script>
+<script>
+    let source = {
+        lat: 30.5949803,
+        lng: 31.5027293,
+    };
+    let destination;
+    let directionsDisplay;
+    let directionsService = new google.maps.DirectionsService();
+    google.maps.event.addDomListener(window, "load", function () {
+        //new google.maps.places.SearchBox(document.getElementById('Source'));
+        new google.maps.places.SearchBox(
+            document.getElementById("Destination")
+        );
+        directionsDisplay = new google.maps.DirectionsRenderer({
+            draggable: true,
         });
+    });
 
-        function GetRoute() {
-            //*********DIRECTIONS AND ROUTE**********************//
-            //source = document.getElementById("Source").value;
-            destination = document.getElementById("Destination").value;
+    function GetRoute() {
+        //*********DIRECTIONS AND ROUTE**********************//
+        //source = document.getElementById("Source").value;
+        destination = document.getElementById("Destination").value;
 
-            if (source != "" && destination != "") {
+        if (source != "" && destination != "") {
+            map = new google.maps.Map(document.getElementById("Map"));
+            directionsDisplay.setMap(map);
+            directionsDisplay.setPanel(document.getElementById("Panel"));
 
-                map = new google.maps.Map(document.getElementById('Map'));
-                directionsDisplay.setMap(map);
-                directionsDisplay.setPanel(document.getElementById('Panel'));
+            let request = {
+                origin: source,
+                destination: destination,
+                travelMode: google.maps.TravelMode.DRIVING,
+            };
 
-                let request = {
-                    origin: source,
-                    destination: destination,
-                    travelMode: google.maps.TravelMode.DRIVING
-                };
-
-                directionsService.route(request, function (response, status) {
-                    if (status == google.maps.DirectionsStatus.OK) {
-                        directionsDisplay.setDirections(response);
-                    }
-                });
-
-                setTimeout(GetStep, 1000);
-            } else {
-                alert("Enter your destination");
-            }
-        }
-
-        function GetStep() {
-            let current_location = document.getElementsByClassName('adp-text');
-            let setPoint = current_location[0].innerText;
-            let destPoint = current_location[1].innerText;
-            console.log("Your current location: " + setPoint);
-            console.log("Your Destination: " + destPoint);
-
-            let dest_steps = document.getElementsByClassName('adp-directions');
-            let step = dest_steps[0].childNodes[0].childNodes
-            console.log(step[0].innerText);
-
-            function fetchdata() {
-                $.ajax({
-                    url: 'fetch_details.php',
-                    type: 'post',
-                    success: function (response) {
-                        // Perform operation on the return value
-                        alert(response);
-                    }
-                });
-            }
-            $(document).ready(function () {
-                setInterval(fetchdata, 5000);
+            directionsService.route(request, function (response, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(response);
+                }
             });
+
+            setTimeout(GetStep, 1000);
+        } else {
+            alert("Enter your destination");
         }
+    }
 
+    function GetStep() {
+        let current_location = document.getElementsByClassName("adp-text");
+        let setPoint = current_location[0].innerText;
+        let destPoint = current_location[1].innerText;
+        console.log("Your current location: " + setPoint);
+        console.log("Your Destination: " + destPoint);
 
-    </script>
+        let dest_steps = document.getElementsByClassName("adp-directions");
+        let step = dest_steps[0].childNodes[0].childNodes;
+        let first_step = step[0].childNodes[2].innerText;
+        console.log(step[0].childNodes[2].innerText);
+
+        const url = "Put API URL";
+
+        // post body data
+        const data = {
+            current_loc: setPoint,
+            des_loc: destPoint,
+            f_step: first_step,
+        };
+
+        // request options
+        const options = {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+
+        // send POST request
+        fetch(url, options)
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+    }
+</script>
 {% endblock head %} {% block body %}
 
-    <div class="col-lg-7 col-sm-12 ml-auto mr-auto content">
+<div class="col-lg-7 col-sm-12 ml-auto mr-auto content">
+    <table border="0" cellpadding="0" cellspacing="3">
+        <tr>
+            <td colspan="2">
+                Destination:
+                <input
+                    type="text"
+                    id="Destination"
+                    placeholder="Enter a destination location"
+                    style="width: 40%;"
+                />
 
-        <table border="0" cellpadding="0" cellspacing="3">
-            <tr>
-                <td colspan="2">
-                    Destination:
-                    <input type="text" id="Destination" placeholder="Enter a destination location" style="width: 40%"/>
-
-                    <br/>
-                    <input type="button" value="Get Route" onclick="GetRoute()"/>
-                    <hr/>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <div id="dvDistance">
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div id="Map" style="width: 500px; height: 500px">
-                    </div>
-                </td>
-                <td>
-                    <div id="Panel" style="width: 700px; height: 500px">
-                    </div>
-                </td>
-            </tr>
-        </table>
-        <br/>
-
-    </div>
+                <br />
+                <input type="button" value="Get Route" onclick="GetRoute()" />
+                <hr />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div id="dvDistance"></div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div id="Map" style="width: 500px; height: 500px;"></div>
+            </td>
+            <td>
+                <div id="Panel" style="width: 700px; height: 500px;"></div>
+            </td>
+        </tr>
+    </table>
+    <br />
+</div>
 
 {% endblock body %}
