@@ -81,7 +81,7 @@ python-engineio==3.11.2
 python-socketio==4.4.0
 python-telegram-bot==12.5.1
 pytz==2019.1
-PyYAML==5.3.1
+PyYAML==5.4
 requests==2.23.0
 reverse-geocoder==1.5.1
 rsa==3.4.2
