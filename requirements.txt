@@ -52,7 +52,7 @@ jmespath==0.10.0
 jsonify==0.5
 jwt==1.0.0
 lazy-object-proxy==1.4.3
-Mako==1.1.2
+Mako==1.2.2
 MarkupSafe==1.1.1
 mccabe==0.6.1
 monotonic==1.5
